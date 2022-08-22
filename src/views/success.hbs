@@ -1,0 +1,137 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+*{
+    margin: 0px; padding: 0px;
+    
+    font-family:'Cabin',sans-serif;
+
+}
+        body {
+            background: linear-gradient(90deg, rgba(160,196,255,1) 13%, rgba(218,193,254,1) 99%); 
+            display: flex;
+            justify-content:center;
+            align-items: center;
+
+            padding: 50px 20px
+        }
+        .top {
+            background-color: #7AD173;
+            display: flex;
+            justify-content:center;
+            padding: 35px 0px;
+            flex-direction: column;
+            align-items: center; 
+            border-radius: 20px  20px 0px 0px;
+        }
+        .bottom{
+            display: flex;
+            justify-content:center;
+            padding: 75px 0px;
+            flex-direction: column;
+            align-items: center;
+            border-radius: 0px  0px 20px 20px; 
+        }
+        .text {
+            color: #828282;
+            font-size: 20px;
+            font-family:'Cabin',sans-serif;
+
+        }
+        .btn {
+            background-color:#7AD173;
+            padding: 12px 70px;
+            margin-top: 25px;
+            display: inline-block;
+            color: white;
+            border-radius: 40px;
+            font-size: 22px;
+        }
+
+        @media only screen and (max-width: 800px) {
+.main{
+       width:60% !important;
+}
+        }
+
+        @media only screen and (max-width: 700px) {
+.main{
+       width:70% !important;
+}
+        }
+
+        @media only screen and (max-width: 600px) {
+.main{
+       width:80% !important;
+}
+        }
+
+        @media only screen and (max-width: 500px) {
+/* .main{
+       width:90% !important;
+} */
+.txtsucess {
+    font-size:27px !important;
+}
+.image {
+width: 55px !important;
+}
+
+.text {
+    font-size: 20px; 
+}
+.btn {
+    font-size: 22px;
+    padding: 10px 45px;
+}
+        }
+
+        @media only screen and (max-width: 400px) {
+            .main {
+                width:90% !important;
+            }
+            .txtsucess {
+    font-size:25px !important;
+}
+.image {
+width: 50px !important;
+}
+
+.text {
+    font-size: 18px; 
+}
+.btn {
+    font-size: 19px;
+    padding: 10px 45px;
+}
+        }
+    </style>
+
+<link href="https://fonts.googleapis.com/css?family=Cabin:400,700" rel="stylesheet" type="text/css">
+</head>
+<body>
+    
+<div style="width: 450px;" class="main">
+ <div class="top ">
+    <div style="font-family:'Cabin',sans-serif; font-size:30px; color:white" class="txtsucess">Success</div>
+    <div style="padding-top:15px">
+    <img src="/check.png" alt="" style="width: 68px;display: inline-block" class="image">
+</div>
+ </div>
+ <div style="background:white;" class="bottom">
+        <div class="text">    Successfully Verified Email</div>
+       <a href=""> <div class="btn">Continue</div>
+    </a>
+ </div>
+ <div>
+
+ </div>
+
+</div>
+</body>
+</html>
