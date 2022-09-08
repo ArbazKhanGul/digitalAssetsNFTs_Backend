@@ -26,6 +26,10 @@ const UserSchema = new mongosse.Schema({
     trim : true,
     immutable: true
   },
+  description:{
+    type:String,
+    trime:true
+  },
   address: {
     type: String,
     required: true,
@@ -83,6 +87,7 @@ const UserSchema = new mongosse.Schema({
 //     console.log(err);
 //   }
 // };
+
 const User = mongosse.model("SignUpForm", UserSchema);
 
 module.exports = User;

@@ -7,16 +7,14 @@ const sendEmail = async (obj) => {
 
 
 
-  const { _id, email } = obj
-  console.log("🚀 ~ file: sendEmail.js ~ line 6 ~ sendEmail ~ _id", _id)
-  console.log("🚀 ~ file: sendEmail.js ~ line 6 ~ sendEmail ~ email", email)
+  const { _id, email } = obj;
+
  let token = jwt.sign({ _id}, process.env.SECRET_KEY,{
 
-  // expiresIn: '1h' // expires in 24 hours
-  expiresIn : '1m'
+  expiresIn: '1h' // expires in 24 hours
+  // expiresIn : '1m'
    });
-  console.log("🚀 ~ file: sendEmail.js ~ line 9 ~ sendEmail ~ token", token)
-
+   
 
 
 
@@ -74,20 +72,20 @@ transporter.use('compile',hbs({
 // mailobject
 
 const mailObj = {
-  from: "arbazkhangul123@gmail.com",
-  to:["arbazkhangul2@gmail.com"],
+  from: `${process.env.SENDER_EMAIL}`,
+  to:[email],
   subject: "[Golden Words NFTs] Singup Verification Email",
 
   attachments: [
 {
   filename: 'logo.png',
-    path: __dirname +'/assets/logo.png',
-   cid: 'logo'
+  path: __dirname +'/assets/logo.png',
+  cid: 'logo'
 },
 ],
   template:'main',
   context: {
-    ref: `http://localhost:5000/verify/${token}`
+    ref: `${process.env.SERVER_URL}/verify/${token}`
 }
 };
 
