@@ -22,18 +22,18 @@ const UserSchema = new mongosse.Schema({
   email: {
     type: String,
     required: true,
-    // unique: true,
+    unique: true,
     trim : true,
     immutable: true
   },
   description:{
     type:String,
-    trime:true
+    trim:true
   },
   address: {
     type: String,
     required: true,
-    // unique: true,
+    unique: true,
     trim : true,
     immutable: true
   },
