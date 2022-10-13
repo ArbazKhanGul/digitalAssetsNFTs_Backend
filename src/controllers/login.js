@@ -59,13 +59,14 @@ exports.login = async (req, res) => {
     throw new Error("Invalid Signature");
   }
 
-  let token = jwt.sign({ _id:result._id}, process.env.SECRET_KEY_LOGIN);
+  req.session.user=result;
+  // let token = jwt.sign({ _id:result._id}, process.env.SECRET_KEY_LOGIN);
 
   
   res.status(200).send({
     message: "success",
-    loginAddress: signerAddress,
-    token: token,
+    // loginAddress: signerAddress,
+    // token: token,
     user:result
   });
 };

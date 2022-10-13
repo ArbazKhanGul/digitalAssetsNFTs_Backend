@@ -6,7 +6,9 @@ const {userRegisteration}=require("../controllers/registeration");
 const {sendEmail,emailVerify}=require("../controllers/email");
 const {authenticate}=require("../middleware/authentication");
 const {profile, profileUpdate}=require("../controllers/profile");
-
+const {verify}=require("../controllers/authentication")
+const {logout}=require("../controllers/logout")
+const {collection}=require("../controllers/collection")
 const multiupload=store.fields([{name: 'profile',maxCount:1},{name: 'cover',maxCount:1}]);
 
 // registeration
@@ -31,5 +33,13 @@ router.get("/profile",authenticate,profile);
 //profileUpdate
 router.patch("/profileUpdate",authenticate,multiupload,profileUpdate);
 
+//verification
+router.get("/verify",verify);
+
+//logout
+router.get("/logout",logout)
+
+//collection
+router.get("/getcollection/:id",collection)
 
 module.exports = router;

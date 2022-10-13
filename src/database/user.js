@@ -13,17 +13,20 @@ const UserSchema = new mongosse.Schema({
     type: String,
     required: true,
     trim : true,
+    lowercase: true,
   },
   authorName: {
     type: String,
     required: true,
     trim : true,
+    lowercase: true,
   },
   email: {
     type: String,
     required: true,
     unique: true,
     trim : true,
+    lowercase: true,
     immutable: true
   },
   description:{
@@ -33,7 +36,7 @@ const UserSchema = new mongosse.Schema({
   address: {
     type: String,
     required: true,
-    unique: true,
+    // unique: true,
     trim : true,
     immutable: true
   },
@@ -61,9 +64,20 @@ const UserSchema = new mongosse.Schema({
   nonce: {
     type:String,
     required: true,
+  },
+  volume:{
+    type: Number,
+    default: 0,
+    min: 0,
+  },
+  floorPrice:{
+    type: Number,
+    default: 0.0,
+    min: 0,
   }
 },
-{ timestamps: true }
+{ timestamps: true },
+
 );
 
 // We are bcrypting password here

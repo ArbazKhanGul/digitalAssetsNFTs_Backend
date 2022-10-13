@@ -6,6 +6,10 @@ const cors = require("cors");
 const morgan = require("morgan");
 require("./src/database/connection");
 const path = require("path");
+const session=require("express-session");
+const RedisStore = require('connect-redis')(session);
+var redis=require('redis')
+
 
 const app = express();
 app.use(
@@ -17,6 +21,22 @@ app.use(
 
 
 
+//Redis connection
+// var Redisclient=redis.createClient(
+//   {
+//   host: 'localhost',
+//   port: 6379,
+//   legacyMode: true 
+// }
+// );
+// Redisclient.on('error', function (err) {
+//   console.log('Could not establish a connection with redis. ' + err);
+// });
+// Redisclient.connect()
+
+
+
+
 app.use(express.static("public"));
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "/src/views"));
@@ -25,6 +45,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
+
+
+//express session
+app.use(session({
+  // store: new RedisStore({ client: Redisclient }),
+  secret:process.env.SECRET_KEY_SESSION,
+  resave:false,
+  saveUninitialized:false,
+  cookie:{
+      secure: false, // if true only transmit cookie over https
+      httpOnly: false, // if true prevent client side JS from reading the cookie 
+      // maxAge: 1000 * 60 * 10 // session max age in miliseconds
+  },
+  
+  }))
+
+  
 ///allroutes
 app.use(router);
 
@@ -54,7 +91,7 @@ app.use((req, res, next) => {
 
 
 app.use((error, req, res, next) => {
-  console.log("🚀 ~ file: app.js ~ line 50 ~ app.use ~ error", error.message);
+  console.log("🚀 ~ file: app.js ~ line 94 ~ app.use ~ error", error.message);
 
   let response = error.message;
 
