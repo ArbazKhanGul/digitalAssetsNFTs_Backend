@@ -1,10 +1,7 @@
 const mongosse = require("mongoose");
 // const bcrypt = require("bcryptjs");
 // const jwt = require("jsonwebtoken");
-var mongodbErrorHandler = require('mongoose-mongodb-errors')
 
-
-mongosse.plugin(mongodbErrorHandler);
 
 
 
@@ -31,7 +28,8 @@ const UserSchema = new mongosse.Schema({
   },
   description:{
     type:String,
-    trim:true
+    trim:true,
+    required: true,
   },
   address: {
     type: String,

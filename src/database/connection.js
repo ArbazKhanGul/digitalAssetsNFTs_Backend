@@ -1,5 +1,5 @@
 const mongoose=require("mongoose");
-// require("dotenv").config({path: "./src/config.env" });
+var mongodbErrorHandler = require('mongoose-mongodb-errors')
 
 console.log("Connecting" )
 
@@ -12,3 +12,6 @@ mongoose.connect(DB).then(()=>{
 }).catch((Err)=>{
     console.log("Error is "+Err)
 })
+
+
+mongoose.plugin(mongodbErrorHandler);

@@ -2,6 +2,7 @@ const User = require("../database/user");
 const web3 = require("web3");
 const jwt = require("jsonwebtoken");
 const { ethers } = require("ethers");
+
 exports.getNonceLogin = async (req, res) => {
   const walletAddress = req.params.address;
   console.log(req.params.address);

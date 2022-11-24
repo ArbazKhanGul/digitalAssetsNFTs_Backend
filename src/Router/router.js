@@ -9,6 +9,7 @@ const {profile, profileUpdate}=require("../controllers/profile");
 const {verify}=require("../controllers/authentication")
 const {logout}=require("../controllers/logout")
 const {collection}=require("../controllers/collection")
+const {nftCreation}=require("../controllers/nftcreation")
 const multiupload=store.fields([{name: 'profile',maxCount:1},{name: 'cover',maxCount:1}]);
 
 // registeration
@@ -41,5 +42,9 @@ router.get("/logout",logout)
 
 //collection
 router.get("/getcollection/:id",collection)
+
+//nftCreation
+router.post("/nftCreation",authenticate,nftCreation)
+
 
 module.exports = router;
