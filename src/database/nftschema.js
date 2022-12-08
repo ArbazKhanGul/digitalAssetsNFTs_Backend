@@ -58,6 +58,11 @@ const nftSchema = new mongosse.Schema({
   nftTextLength:{
     type: Number,
   },
+  status:{
+   type: String,
+   default: "notVerified",
+   trim:true
+  },
   title:{
     type:String,
     trim:true,
@@ -67,6 +72,11 @@ const nftSchema = new mongosse.Schema({
     type: Number,
     default: 0.0,
     min: 0,
+  },
+  tokenId:{
+    type: Number,
+    min: 0,
+    immutable:true,
   }
 },
 { timestamps: true },

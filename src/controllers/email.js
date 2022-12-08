@@ -55,7 +55,7 @@ exports.emailVerify=async (req,res)=>{
       const result=await User.updateOne({_id:verifyToken._id},{$set:{
         verify:true
       }})
-  
+
       console.log("🚀 ~ file: router.js ~ line 91 ~ router.get ~ result", result)
     
       res.render('success',{

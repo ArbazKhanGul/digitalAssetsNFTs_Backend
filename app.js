@@ -9,6 +9,7 @@ const path = require("path");
 const session=require("express-session");
 const RedisStore = require('connect-redis')(session);
 var redis=require('redis')
+var listenEvent=require('./src/utils/listenEvent')
 
 
 const app = express();
@@ -19,7 +20,7 @@ app.use(
   })
 );
 
-
+listenEvent();
 
 //Redis connection
 // var Redisclient=redis.createClient(

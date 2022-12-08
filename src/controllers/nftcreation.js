@@ -1,12 +1,19 @@
 const { convert } = require('html-to-text');
 var crypto = require('crypto');
 var NFT = require('../database/nftschema')
-
+var bnb_price=require("../utils/price")
 
 exports.nftCreation = async (req, res) => {
 
   const nftFrontend = req.body;
   const user = req.user;
+
+  const checkName = await NFT.findOne({nftName: nftFrontend.nftName})
+  console.log("🚀 ~ file: nftcreation.js ~ line 12 ~ exports.nftCreation= ~ checkName", checkName)
+
+ if(checkName){
+  throw new Error("NFT name already exists")
+ }
 
 
   //convert text to proper html format
@@ -35,10 +42,32 @@ exports.nftCreation = async (req, res) => {
 
   console.log("🚀 ~ file: nftcreation.js ~ line 34 ~ exports.nftCreation= ~ result", result)
 
+  console.log("first check point")
+
   if(result){
-   res.send({ status: "duplicate",result})
-   return;
+    if(result.status=="notVerified")
+    {
+    let date=new Date();
+    let d1=date.getTime();
+
+    let d2=result.createdAt.getTime() + 1800000;
+
+     if(d2 > d1){
+      res.send({ status: "timeNotPass",time:d2-d1})
+      return;
+     }
+     else{
+       await NFT.deleteOne({_id:result._id});
+     }
+    }
+    else{
+    res.send({ status: "duplicate",result})
+    return;
+    }
+
   }
+
+  console.log("third check point")
 
   let title=""
   if(nftTextLength<44)
@@ -65,11 +94,11 @@ exports.nftCreation = async (req, res) => {
   })
 
   const saved_nft = await nft.save();
-
-
   console.log("🚀 ~ file: router.js ~ line 50 ~ router.post ~ saved_user", saved_nft)
 
+  let estimated_price_inDollar=await bnb_price(nftTextLength);
+  console.log("🚀 ~ file: nftcreation.js ~ line 71 ~ exports.nftCreation= ~ estimated_price_inDollar", estimated_price_inDollar)
 
-  res.send({ status: "success" })
+  res.send({ status: "success",price:estimated_price_inDollar,hash})
 
 }
