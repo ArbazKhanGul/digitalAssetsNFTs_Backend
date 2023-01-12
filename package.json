@@ -21,6 +21,7 @@
     "express-session": "^1.17.3",
     "hbs": "^4.2.0",
     "html-to-text": "^8.2.1",
+    "ipfs-http-client": "^50.1.2",
     "jsonwebtoken": "^8.5.1",
     "make-random": "^3.0.2",
     "mongoose": "^6.5.2",

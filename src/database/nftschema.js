@@ -68,16 +68,21 @@ const nftSchema = new mongosse.Schema({
     trim:true,
     required:true,
   },
+  tokenId:{
+    type: Number,
+    min: 0,
+  },
+  currentSellingId:{
+    type: Number,
+    default: 0,
+    min: 0,
+  },
   price:{
     type: Number,
     default: 0.0,
     min: 0,
   },
-  tokenId:{
-    type: Number,
-    min: 0,
-    immutable:true,
-  }
+
 },
 { timestamps: true },
 );

@@ -5,7 +5,7 @@ module.exports= async function price(nftTextLength) {
 
     const binance = new Binance();
      let ticker = await binance.prices('BNBUSDT');
-    ;
+
      let inDollar=(1 / ticker.BNBUSDT).toFixed(18);
      
      inDollar = (inDollar / 10).toFixed(18);
