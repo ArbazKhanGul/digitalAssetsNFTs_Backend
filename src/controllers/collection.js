@@ -2,25 +2,8 @@ const User = require("../database/user");
 
 exports.collection = async (req, res) => {
 
-
-    // const new_user = new User({
-    //     address: "0x122233d333333333333333333333333333333333",
-    //     collectionName:"arbaz",
-    //     authorName:"khan",
-    //     profile:"proigle",
-    //     cover:"proigle",
-    //     email:"arbazkh12dda3@gmail.com",
-    //     description:"g,aoing",
-    //     nonce: "3gaaga",
-    //   });
-    //   // console.log("🚀 ~ file: router.js ~ line 46 ~ router.post ~ new_user", new_user)
+console.log("inside collection")
     
-
-    //   const saved_user = await new_user.save();
-    //   console.log("🚀 ~ file: router.js ~ line 50 ~ router.post ~ saved_user", saved_user)
-      
-    //   res.send({status: "success"})
-    //   return 
     let id = req.params.id;
     console.log("🚀 ~ file: collection.js ~ line 6 ~ exports.collection= ~ id", id)
     let query = req.query
@@ -52,6 +35,7 @@ exports.collection = async (req, res) => {
             "$facet": {
                 "totalData": [
                     { "$match": matchQuery },
+                    { "$sort" : { volume : -1 } },
                     { "$skip": skip },
                     { "$limit": 9 }
                 ],

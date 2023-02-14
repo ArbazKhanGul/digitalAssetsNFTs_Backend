@@ -68,9 +68,14 @@ const UserSchema = new mongosse.Schema({
     default: 0,
     min: 0,
   },
-  floorPrice:{
+  itemsCreated:{
     type: Number,
-    default: 0.0,
+    default: 0,
+    min: 0,
+  },
+  itemsBuy:{
+    type: Number,
+    default: 0,
     min: 0,
   }
 },
@@ -78,27 +83,7 @@ const UserSchema = new mongosse.Schema({
 
 );
 
-// We are bcrypting password here
 
-// UserSchema.pre("save", async function (next) {
-//   console.log("Running pre funciton");
-//   if (this.isModified("password")) {
-//     this.password = await bcrypt.hash(this.password, 12);
-//   }
-//   next();
-// });
-
-// UserSchema.methods.generateAuthToken = async function () {
-//   try {
-//     let token = jwt.sign({ _id: this._id }, process.env.SECRET_KEY);
-//     this.date = Date.now();
-//     await this.save();
-//     console.log("Im token");
-//     return token;
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
 
 const User = mongosse.model("SignUpForm", UserSchema);
 

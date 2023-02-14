@@ -1,16 +1,17 @@
 const { convert } = require('html-to-text');
-var crypto = require('crypto');
-var NFT = require('../database/nftschema')
-var bnb_price=require("../utils/price")
+const crypto = require('crypto');
+const NFT = require('../database/nftschema')
+const bnb_price=require("../utils/price")
+const ipfs=require("../utils/ipfs")
 
 exports.nftCreation = async (req, res) => {
 
   const nftFrontend = req.body;
   const user = req.user;
 
-  const checkName = await NFT.findOne({nftName: nftFrontend.nftName})
-  console.log("🚀 ~ file: nftcreation.js ~ line 12 ~ exports.nftCreation= ~ checkName", checkName)
 
+  const checkName = await NFT.findOne({nftName: nftFrontend.nftName})
+ 
  if(checkName){
   throw new Error("NFT name already exists")
  }
@@ -28,8 +29,9 @@ exports.nftCreation = async (req, res) => {
   });
   text = text.replace(/\xA0/g, ' ');
 
-  //length of text
-  let nftTextLength = text.length
+
+
+
 
 
   //create hash of text
@@ -40,9 +42,7 @@ exports.nftCreation = async (req, res) => {
   //find text
   const result = await NFT.findOne({hash})
 
-  console.log("🚀 ~ file: nftcreation.js ~ line 34 ~ exports.nftCreation= ~ result", result)
-
-  console.log("first check point")
+  
 
   if(result){
     if(result.status=="notVerified")
@@ -64,11 +64,15 @@ exports.nftCreation = async (req, res) => {
     res.send({ status: "duplicate",result})
     return;
     }
-
   }
 
-  console.log("third check point")
 
+    let ipfspath= await ipfs(nftFrontend.nftName,nftFrontend.nftDescription,nftFrontend.nftLanguage,changeText,hash,user.email,user.address); 
+
+  //length of text
+  let nftTextLength = text.length
+
+  //title of nft
   let title=""
   if(nftTextLength<44)
   {
@@ -81,24 +85,23 @@ exports.nftCreation = async (req, res) => {
 
   const nft = new NFT({
     nftName: nftFrontend.nftName,
-    nftLanguage: nftFrontend.nftLanguage,
-    nftDescription: nftFrontend.nftDescription,
-    nftText: changeText,
+    // nftLanguage: nftFrontend.nftLanguage,
+    // nftDescription: nftFrontend.nftDescription,
+    // nftText: changeText,
     creator_email: user.email,
     owner_email: user.email,
     creator_address: user.address,
     owner_address: user.address,
+    tokenURI:ipfspath,
     hash,
-    nftTextLength,
+    // nftTextLength,
     title
   })
 
   const saved_nft = await nft.save();
-  console.log("🚀 ~ file: router.js ~ line 50 ~ router.post ~ saved_user", saved_nft)
-
+ 
   let estimated_price_inDollar=await bnb_price(nftTextLength);
-  console.log("🚀 ~ file: nftcreation.js ~ line 71 ~ exports.nftCreation= ~ estimated_price_inDollar", estimated_price_inDollar)
-
-  res.send({ status: "success",price:estimated_price_inDollar,hash})
+ 
+  res.send({ status: "success",price:estimated_price_inDollar,ipfspath})
 
 }

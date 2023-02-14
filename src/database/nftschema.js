@@ -9,18 +9,23 @@ const nftSchema = new mongosse.Schema({
     trim : true,
     lowercase: true,
   },
-  nftLanguage: {
+  // nftLanguage: {
+  //   type: String,
+  //   required: true,
+  //   trim : true,
+  //   lowercase: true,
+  // },
+  tokenURI: {
     type: String,
     required: true,
-    trim : true,
-    lowercase: true,
+    trim : true
   },
-  nftText: {
-    type: String,
-    required: true,
-    trim : true,
-    unique : true,
-  },
+  // nftText: {
+  //   type: String,
+  //   required: true,
+  //   trim : true,
+  //   unique : true,
+  // },
   creator_email: {
     type: String,
     required: true,
@@ -33,11 +38,11 @@ const nftSchema = new mongosse.Schema({
     trim : true,
     lowercase: true,
       },
-  nftDescription:{
-    type:String,
-    trim:true,
-    required: true,
-  },
+  // nftDescription:{
+  //   type:String,
+  //   trim:true,
+  //   required: true,
+  // },
   creator_address: {
     type: String,
     required: true,
@@ -55,9 +60,9 @@ const nftSchema = new mongosse.Schema({
     trim : true,
     unique:true
   },
-  nftTextLength:{
-    type: Number,
-  },
+  // nftTextLength:{
+  //   type: Number,
+  // },
   status:{
    type: String,
    default: "notVerified",
@@ -82,7 +87,15 @@ const nftSchema = new mongosse.Schema({
     default: 0.0,
     min: 0,
   },
-
+  lastPrice:{
+    type: Number,
+    default: 0.0,
+    min: 0,
+  },
+  approved:{
+    type: Boolean,
+    default: true
+  }
 },
 { timestamps: true },
 );
