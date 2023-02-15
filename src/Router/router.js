@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const store=require("../middleware/multer");
+const storeUpdate=require("../middleware/multerUpdate");
 const {getNonceLogin, login}=require("../controllers/login");
 const {userRegisteration}=require("../controllers/registeration");
 const {sendEmail,emailVerify}=require("../controllers/email");
@@ -24,6 +25,7 @@ const {ownernfts}=require("../controllers/ownernfts");
 
 
 const multiupload=store.fields([{name: 'profile',maxCount:1},{name: 'cover',maxCount:1}]);
+const multiuploadUpdate=storeUpdate.fields([{name: 'profile',maxCount:1},{name: 'cover',maxCount:1}]);
 
 
 
@@ -53,7 +55,7 @@ router.get("/homepage",homepagedata);
 router.get("/profile",authenticate,profile);
 
 //profileUpdate
-router.patch("/profileUpdate",authenticate,multiupload,profileUpdate);
+router.patch("/profileUpdate",authenticate,multiuploadUpdate,profileUpdate);
 
 //verification
 router.get("/verify",verify);

@@ -1,6 +1,7 @@
 const User = require('../database/user');
 const fs = require('fs');
 const path = require('path');
+
 exports.profile=(req,res)=>{
   
     console.log("🚀 ~ file: profile.js ~ line 3 ~ req.user", req.user)
@@ -10,6 +11,8 @@ exports.profile=(req,res)=>{
       });
 
     }
+
+
 
 exports.profileUpdate=async (req,res)=>{
   
