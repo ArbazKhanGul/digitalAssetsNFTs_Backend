@@ -9,7 +9,7 @@ exports.profilenft = async (req, res) => {
     console.log("🚀 ~ file: profilenft.js:8 ~ exports.profilenft= ~ skip", skip)
     console.log("🚀 ~ file: collection.js ~ line 6 ~ exports.collection= ~ id", id)
 
-    let matchQuery={};
+    let matchQuery={status:{$ne:"notVerified"}};
 
   if(type==="Owned") {matchQuery.owner_email = id}
   if(type==="Created") {matchQuery.creator_email = id}

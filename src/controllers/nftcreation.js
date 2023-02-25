@@ -13,8 +13,28 @@ exports.nftCreation = async (req, res) => {
   const checkName = await NFT.findOne({nftName: nftFrontend.nftName})
  
  if(checkName){
-  throw new Error("NFT name already exists")
- }
+
+  if(checkName.status=="notVerified")
+  {
+  let date=new Date();
+  let d1=date.getTime();
+
+  let d2=checkName.createdAt.getTime() + 600000;
+
+   if(d2 > d1){
+    res.send({ status: "timeNotPass",time:d2-d1,type:"name"})
+    return;
+   }
+   else{
+     await NFT.deleteOne({_id:checkName._id});
+   }
+  }
+  else{
+  res.send({ status: "duplicate",result:checkName,type:"name"})
+  return;
+  }
+
+}
 
 
   //convert text to proper html format
@@ -50,10 +70,10 @@ exports.nftCreation = async (req, res) => {
     let date=new Date();
     let d1=date.getTime();
 
-    let d2=result.createdAt.getTime() + 1800000;
+    let d2=result.createdAt.getTime() + 600000;
 
      if(d2 > d1){
-      res.send({ status: "timeNotPass",time:d2-d1})
+      res.send({ status: "timeNotPass",time:d2-d1,type:"text"})
       return;
      }
      else{
@@ -61,7 +81,7 @@ exports.nftCreation = async (req, res) => {
      }
     }
     else{
-    res.send({ status: "duplicate",result})
+    res.send({ status: "duplicate",result,type:"text"})
     return;
     }
   }

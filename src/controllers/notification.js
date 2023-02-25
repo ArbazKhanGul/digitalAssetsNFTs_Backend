@@ -2,11 +2,27 @@ var Notification = require('../database/notificationSchema')
 // import { ethers } from "ethers";
 
 exports.notification = async (req, res) => {
-let {skip}=req.query;
+let {skip,state}=req.query;
 let user=req.user;
+let obj={notification_for:user.address};
 
-let notifications=await Notification.find({notification_for:user.address}).skip(skip).limit(12);
+
+if(state=="false"){
+        obj.status=false
+}
 
 
-        res.send({ status: "success",notifications});
+// let notifications=await Notification.find(obj).skip(skip).limit(12);
+
+const notifications = await Notification.aggregate([
+                    { "$match": obj },
+                    { "$sort" : { createdAt : -1 } },
+                    { "$skip": parseInt(skip) },
+                    { "$limit": 12 }
+    ])
+    
+
+
+res.send({ status: "success",notifications});
+
 }

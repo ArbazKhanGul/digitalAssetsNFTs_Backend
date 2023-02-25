@@ -5,7 +5,7 @@ const sendEmail=require('../utils/sendEmail');
 exports.userRegisteration=async (req, res) => {
 
   
-    const {collectionName,authorName,email,walletAddress,description} = req.body;
+    const {authorName,email,walletAddress,description} = req.body;
     const {profile,cover}=req.files;
 
     console.log("inside registeration");
@@ -21,7 +21,6 @@ exports.userRegisteration=async (req, res) => {
 
       const new_user = new User({
         address: web3.utils.toChecksumAddress(walletAddress),
-        collectionName,
         authorName,
         profile:profileUrl,
         cover:coverUrl,

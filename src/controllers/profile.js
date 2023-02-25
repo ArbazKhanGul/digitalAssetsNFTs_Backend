@@ -15,8 +15,9 @@ exports.profile=(req,res)=>{
 
 
 exports.profileUpdate=async (req,res)=>{
-  
+
   let values=req.body;
+  console.log("🚀 ~ file: profile.js:20 ~ exports.profileUpdate= ~ values", values)
 
 
    if(!(Object.keys(req.files).length === 0))
@@ -31,9 +32,8 @@ exports.profileUpdate=async (req,res)=>{
     }
    }
 
-   console.log("🚀 ~ file: profile.js ~ line 17 ~ exports.profileUpdate= ~ values", values) 
-  let response;
 
+  let response;
   if(!(Object.keys(values).length === 0))
    {
    response=await User.findByIdAndUpdate(req.user._id,values,{
@@ -41,9 +41,9 @@ exports.profileUpdate=async (req,res)=>{
     newValidator:true,
       runValidator:true
     })
-   console.log("🚀 ~ file: profile.js ~ line 41 ~ exports.profileUpdate= ~ response", response)
    }
 
+   req.session.user=response;
     res.status(200).send({
         message: "success",
         user:response

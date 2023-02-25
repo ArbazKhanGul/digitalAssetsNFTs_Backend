@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const store=require("../middleware/multer");
-const storeUpdate=require("../middleware/multerUpdate");
+// const storeUpdate=require("../middleware/multerUpdate");
 const {getNonceLogin, login}=require("../controllers/login");
 const {userRegisteration}=require("../controllers/registeration");
 const {sendEmail,emailVerify}=require("../controllers/email");
@@ -20,12 +20,12 @@ const {individualnotification}=require("../controllers/individualnotification");
 const {homepagedata}=require("../controllers/homepagedata");
 const {profilenft}=require("../controllers/profilenft");
 const {ownernfts}=require("../controllers/ownernfts");
-
+const {deletenotification, unreadnotification}=require("../controllers/notificationdata");
 
 
 
 const multiupload=store.fields([{name: 'profile',maxCount:1},{name: 'cover',maxCount:1}]);
-const multiuploadUpdate=storeUpdate.fields([{name: 'profile',maxCount:1},{name: 'cover',maxCount:1}]);
+// const multiuploadUpdate=storeUpdate.fields([{name: 'profile',maxCount:1},{name: 'cover',maxCount:1}]);
 
 
 
@@ -55,7 +55,7 @@ router.get("/homepage",homepagedata);
 router.get("/profile",authenticate,profile);
 
 //profileUpdate
-router.patch("/profileUpdate",authenticate,multiuploadUpdate,profileUpdate);
+router.patch("/profileUpdate",authenticate,multiupload,profileUpdate);
 
 //verification
 router.get("/verify",verify);
@@ -94,5 +94,13 @@ router.get("/notification",authenticate,notification)
 
 //individualnotification
 router.get("/individualnotification/:notification_id",authenticate,individualnotification)
+
+//delete notification
+router.get("/deletenotification/:notification_id",authenticate,deletenotification)
+
+
+//unread notification
+router.get("/unreadnotification",authenticate,unreadnotification)
+
 
 module.exports = router;

@@ -13,16 +13,31 @@ const notificationSchema = new mongosse.Schema({
         required: true,
         trim: true,
     },
+    owner_profile: {
+        type: String,
+        required: true,
+        trim: true,
+    },
     type: {
         type: String,
         required: true,
         trim: true,
         lowercase: true,
     },
-    tokenId: {
-        type: Number,
-        min: 0,
+    nftName: {
+        type: String,
         required: true,
+        trim: true,
+    },
+    nftId:{
+        type: String,
+        required: true,
+        trim: true,
+    },
+    ownerId:{
+        type: String,
+        required: true,
+        trim: true,
     },
     price: {
         type: Number,

@@ -8,7 +8,7 @@ exports.ownernfts = async (req, res) => {
     console.log("🚀 ~ file: ownernfts.js:8 ~ exports.ownernfts= ~ nftName", nftName)
     console.log("🚀 ~ file: ownernfts.js:7 ~ exports.ownernfts= ~ id", id)
 
-    let matchQuery={owner_email:id,nftName:{$ne:nftName}};
+    let matchQuery={owner_email:id,nftName:{$ne:nftName},status:{$ne:"notVerified"}};
 
 
     const result = await NFT.aggregate([

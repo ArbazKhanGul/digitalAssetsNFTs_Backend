@@ -6,12 +6,6 @@ const mongosse = require("mongoose");
 
 
 const UserSchema = new mongosse.Schema({
-  collectionName: {
-    type: String,
-    required: true,
-    trim : true,
-    lowercase: true,
-  },
   authorName: {
     type: String,
     required: true,
@@ -34,7 +28,7 @@ const UserSchema = new mongosse.Schema({
   address: {
     type: String,
     required: true,
-    // unique: true,
+    unique: true,
     trim : true,
     immutable: true
   },
@@ -77,6 +71,11 @@ const UserSchema = new mongosse.Schema({
     type: Number,
     default: 0,
     min: 0,
+  },
+  itemsSell:{
+  type: Number,
+  default: 0,
+  min: 0,
   }
 },
 { timestamps: true },

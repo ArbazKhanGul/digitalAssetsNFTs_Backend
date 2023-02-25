@@ -14,6 +14,7 @@ exports.homepagedata = async (req, res) => {
                         "profile": 1,
                         "volume": 1,
                         "itemsBuy":1,
+                        "itemsSell":1,
                         "itemsCreated":1
                       }},
                       { "$sort" : { volume : -1 } },
