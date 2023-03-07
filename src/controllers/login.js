@@ -63,6 +63,9 @@ exports.login = async (req, res) => {
   req.session.user=result;
   // let token = jwt.sign({ _id:result._id}, process.env.SECRET_KEY_LOGIN);
 
+  // res.setHeader("Access-Control-Allow-Origin", "https://textnft.vercel.app");
+  // res.setHeader("Access-Control-Allow-Credentials", true);
+  // res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   
   res.status(200).send({
     message: "success",

@@ -19,7 +19,7 @@ const {notification}=require("../controllers/notification")
 const {individualnotification}=require("../controllers/individualnotification");
 const {homepagedata}=require("../controllers/homepagedata");
 const {profilenft}=require("../controllers/profilenft");
-const {ownernfts}=require("../controllers/ownernfts");
+const {nftdata}=require("../controllers/nftdata");
 const {deletenotification, unreadnotification}=require("../controllers/notificationdata");
 
 
@@ -82,8 +82,8 @@ router.get("/individualprofile/:profile_id",individualprofile)
 //individualprofile
 router.get("/profilenft/:id",profilenft)
 
-//ownernfts
-router.get("/ownernfts/:id",ownernfts)
+//nftdata
+router.get("/nftdata/:id",nftdata)
 
 //nft Selling
 router.post("/nftSelling",authenticate,nftSelling)

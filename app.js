@@ -11,8 +11,8 @@ const RedisStore = require('connect-redis')(session);
 var redis=require('redis')
 var listenEvent=require('./src/utils/listenEvent')
 
-
 const app = express();
+
 app.use(
   cors({
     origin: [process.env.CLIENT_URL],
@@ -20,8 +20,8 @@ app.use(
   })
 );
 
-listenEvent();
 
+listenEvent();
 //Redis connection
 // var Redisclient=redis.createClient(
 //   {
@@ -58,6 +58,7 @@ app.use(session({
       secure: false, // if true only transmit cookie over https
       httpOnly: false, // if true prevent client side JS from reading the cookie 
       // maxAge: 1000 * 60 * 10 // session max age in miliseconds
+      // sameSite: 'none',
   },
   
   }))
@@ -68,8 +69,6 @@ app.use(router);
 
 //images host
 app.use("/images",express.static("images"));
-
-
 
 
 //404 handle

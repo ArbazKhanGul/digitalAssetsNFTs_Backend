@@ -26,3 +26,23 @@ console.log("🚀 ~ file: nftcreation.js:82 ~ exports.nftCreation= ~ added", add
 }
 
 arb()
+
+
+
+
+const express = require('express');
+const jwt = require('jsonwebtoken');
+const cors = require('cors');
+const app = express();
+
+app.use(cors({ origin: 'https://abc.com', credentials: true }));
+
+app.get('/set-cookie', (req, res) => {
+  const token = jwt.sign({ userId: 123 }, 'my_secret_key');
+  res.cookie('myCookie', token, { domain: 'xyz.com', path: '/', httpOnly: true, secure: true, sameSite: 'none' });
+  res.send('Cookie set!');
+});
+
+app.listen(3000, () => {
+  console.log('Server listening on port 3000');
+});

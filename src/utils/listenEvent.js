@@ -3,7 +3,7 @@ const { ethers } = require("ethers");
 var NFT = require('../database/nftschema')
 const User = require("../database/user");
 const Notification = require("../database/notificationSchema");
-
+const Transaction = require("../database/transaction");
 
 module.exports = async function listenEvent() {
 
@@ -143,15 +143,21 @@ module.exports = async function listenEvent() {
 
 
             //incremnent the previous owner volume
-            await User.updateOne({ address: seller }, {
+      let sellerProfile=await User.findOneAndUpdate({ address: seller }, {
                 $inc: { volume: sellingPrice.toString(), itemsSell: 1 }
             })
-            await User.updateOne({ address: owner }, {
+
+     let ownerProfile=  await User.findOneAndUpdate({ address: owner }, {
                 $inc: { itemsBuy: 1 }
             })
-    
-    
-    
+
+        //insert latest transaction
+            let transaction=new Transaction({sellerProfile: sellerProfile.profile,sellerName:sellerProfile.authorName,
+                sellerId:sellerProfile._id,ownerProfile:ownerProfile.profile,ownerId:ownerProfile.id,ownerName:ownerProfile.authorName,
+             price:sellingPrice.toString(),nftId:result._id
+            })
+            await transaction.save();
+
             //insert notification
             let insertObj = [];
 
@@ -168,6 +174,7 @@ module.exports = async function listenEvent() {
             else {
                 insertObj = [{ notification_for: seller, transfer_to: users?.authorName, price: sellerProfit.toString(), type: "seller_profit", nftName:result?.nftName,nftId:result?.tokenURI,ownerId:users?._id,owner_profile:users?.profile }]
             }
+
             const notificaitonResult = await Notification.insertMany(insertObj);
         }
         catch (error) {
@@ -175,6 +182,10 @@ module.exports = async function listenEvent() {
         }
     });
 });
+
+
+
+
 
 
 
