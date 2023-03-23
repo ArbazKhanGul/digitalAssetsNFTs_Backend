@@ -31,7 +31,9 @@ exports.homepagedata = async (req, res) => {
             "createdAt":1,
             "price":1,
             "title":1,
-            "tokenURI":1
+            "tokenURI":1,
+            "contentURI":1,
+            "contentType":1
           }
         },
           { "$limit": 8 }

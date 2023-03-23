@@ -10,7 +10,7 @@ const {profile, profileUpdate}=require("../controllers/profile");
 const {verify}=require("../controllers/authentication")
 const {logout}=require("../controllers/logout")
 const {collection}=require("../controllers/collection")
-const {nftCreation}=require("../controllers/nftcreation")
+const {nftCreation, nftNameVerification}=require("../controllers/nftcreation")
 const {individualnft}=require("../controllers/individualnft")
 const {individualprofile}=require("../controllers/individualprofile")
 const {nftSelling}=require("../controllers/nftselling")
@@ -71,6 +71,9 @@ router.get("/getnfts/:id",nft)
 
 //nftCreation
 router.post("/nftCreation",authenticate,nftCreation)
+
+//nftCreation
+router.post("/nftnameverify",authenticate,nftNameVerification)
 
 
 //individualnft
