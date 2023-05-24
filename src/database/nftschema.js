@@ -9,10 +9,17 @@ const nftSchema = new mongosse.Schema({
     trim : true,
     lowercase: true,
   },
+
   contentURI: {
     type: String,
     required: true,
     trim : true
+  },
+
+  originalTokenURI: {
+    type: String,
+    trim : true,
+    default:"nothing"
   },
   contentType: {
     type: String,
@@ -24,6 +31,29 @@ const nftSchema = new mongosse.Schema({
     required: true,
     trim : true
   },
+  original:{
+    type:Boolean,
+    default: true
+   },
+
+   copyrightStatus: {
+    type: String,
+    trim : true,
+    default: 'notallowed'
+  },
+
+  copyrightPrice: {
+    type: Number,
+    default: 0.0,
+    min: 0,
+  },
+
+  copyNonce: {
+    type: Number,
+    default: 0.0,
+    min: 0,
+  },
+
   creator_email: {
     type: String,
     required: true,

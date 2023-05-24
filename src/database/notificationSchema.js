@@ -10,7 +10,6 @@ const notificationSchema = new mongosse.Schema({
     },
     transfer_to: {
         type: String,
-        required: true,
         trim: true,
     },
     owner_profile: {
@@ -47,6 +46,10 @@ const notificationSchema = new mongosse.Schema({
     status: {
         type: Boolean,
         default: false,
+    },
+    copyrightId:{
+        type: String,
+        trim: true,
     },
 },
     { timestamps: true },

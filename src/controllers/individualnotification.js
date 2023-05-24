@@ -14,7 +14,6 @@ exports.individualnotification= async (req, res) => {
             status: true
         }
     })
-   console.log("🚀 ~ file: individualnotification.js:18 ~ exports.individualnotification= ~ reponse", reponse)
    }
 
     let result= await Notification.findOne({_id:notification_id});

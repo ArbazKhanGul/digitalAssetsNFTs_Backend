@@ -21,8 +21,17 @@ const {homepagedata}=require("../controllers/homepagedata");
 const {profilenft}=require("../controllers/profilenft");
 const {nftdata}=require("../controllers/nftdata");
 const {deletenotification, unreadnotification}=require("../controllers/notificationdata");
-
-
+const { copyright } = require("../controllers/copyright");
+const {copyrightdata}=require("../controllers/copyrightdata");
+const {copyrightrequests}=require("../controllers/copyrightrequests");
+const { copyrightaction } = require("../controllers/copyrightaction");
+const { copynft } = require("../controllers/copynft");
+const { copycreation } = require("../controllers/copycreation");
+const { copycreationdifferent } = require("../controllers/copycreationdifferent");
+const { cancelcopyright } = require("../controllers/cancelcopyright");
+const { allowcopyright } = require("../controllers/allowcopyright");
+const { copyrightdelete } = require("../controllers/deletecopyright");
+const { copynonce } = require("../controllers/copynonce");
 
 const multiupload=store.fields([{name: 'profile',maxCount:1},{name: 'cover',maxCount:1}]);
 // const multiuploadUpdate=storeUpdate.fields([{name: 'profile',maxCount:1},{name: 'cover',maxCount:1}]);
@@ -104,6 +113,41 @@ router.get("/deletenotification/:notification_id",authenticate,deletenotificatio
 
 //unread notification
 router.get("/unreadnotification",authenticate,unreadnotification)
+
+//copyright Request
+router.post("/requestcopyright",authenticate,copyright)
+
+//individualcopyright
+router.get("/individualcopyright/:copyright_id",authenticate,copyrightdata);
+
+
+//all copyright requests for specific nft
+router.get("/copyrightrequests/:nftName",authenticate,copyrightrequests);
+
+
+//all copyright requests for specific nft
+router.post("/copyrightaction",authenticate,copyrightaction);
+
+
+//all copyright requests for specific nft
+router.get("/copynft/:nft_id",authenticate,copynft);
+
+
+//copy creation of specific nft with same content
+router.post("/copycreation",authenticate,copycreation);
+
+//copy creation of specific nft with different content
+router.post("/copycreationdifferent",authenticate,copycreationdifferent);
+
+
+router.post("/copyrightcancel",authenticate,cancelcopyright);
+
+router.post("/copyrightallow",authenticate,allowcopyright);
+
+
+router.get("/copynonce/:id",authenticate,copynonce);
+
+router.delete("/copyrightdelete/:delete_id",authenticate,copyrightdelete);
 
 
 module.exports = router;

@@ -4,6 +4,7 @@ var NFT = require('../database/nftschema')
 const User = require("../database/user");
 const Notification = require("../database/notificationSchema");
 const Transaction = require("../database/transaction");
+const CopyRight=require("../database/copyrightschema")
 
 module.exports = async function listenEvent() {
 
@@ -12,8 +13,8 @@ module.exports = async function listenEvent() {
 
     const Abi = [
         //Event
-        "event Creation(address indexed owner_address,uint indexed tokenId,string tokenURI)",
-        "event Approval(uint tokenId)",
+        "event Creation(address indexed owner_address,uint indexed tokenId,string tokenURI,bool copyright)",
+        "event ApprovalMarketplace(uint tokenId)",
         "function creatorOf(uint tokenId) public view returns(address)"
     ];
 
@@ -34,17 +35,29 @@ module.exports = async function listenEvent() {
 
     provider.once("block",() =>  {
 
-    nftContract.on("Creation", async (owner_address, tokenId, tokenURI, event) => {
+    nftContract.on("Creation", async (owner_address, tokenId, tokenURI,copyright, event) => {
+       
+        console.log("🚀 ~ file: listenEvent.js:39 ~ nftContract.on ~ tokenURI:", tokenURI)
+        console.log("🚀 ~ file: listenEvent.js:38 ~ nftContract.on ~ copyright:", copyright)
+
         console.log("running")
         try {
             let url=process.env.IPFSURL;
             let substr=tokenURI.substring(url.length);
-            
-            const result = await NFT.updateOne({ tokenURI: substr }, {
+
+            const result = await NFT.findOneAndUpdate({ tokenURI: substr }, {
                 $set: {
                     status: "verified", tokenId: tokenId.toString()
                 }
-            })
+            },{ new: true, useFindAndModify:false })
+
+            if(copyright){
+
+              let copyrightresult=  await CopyRight.findOneAndUpdate({tokenURI:substr,status:"accept"},{
+                    $set:{status:"completed"}
+                });
+              console.log("🚀 ~ file: listenEvent.js:60 ~ copyrightresult ~ copyrightresult:", copyrightresult)
+            }
 
             await User.updateOne({ address: owner_address }, {
                 $inc: { itemsCreated: 1 }
@@ -60,9 +73,9 @@ module.exports = async function listenEvent() {
 
 
     provider.once("block",() =>  {
-    nftContract.on("Approval", async (tokenId, event) => {
+    nftContract.on("ApprovalMarketplace", async (tokenId, event) => {
         try {
-            console.log("Approval event is working");
+           
             const result = await NFT.updateOne({ tokenId: tokenId.toString() }, {
                 $set: {
                     approved: true
@@ -135,7 +148,7 @@ module.exports = async function listenEvent() {
             const result = await NFT.findOneAndUpdate({ tokenId: tokenId.toString() }, {
                 $set: {
                     status: "verified", currentSellingId: 0, price: 0, owner_address: address, owner_email: users.email, approved: false,
-                },
+copyrightStatus:"notallowed",copyrightPrice:0},
                 $inc: { lastPrice: sellingPrice.toString() }
             },{returnDocument: 'before'})
 

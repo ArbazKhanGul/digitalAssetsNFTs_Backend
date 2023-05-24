@@ -2,7 +2,6 @@ var Notification = require('../database/notificationSchema')
 
 exports.deletenotification= async (req, res) => {
     let {notification_id} = req?.params;
-    console.log("🚀 ~ file: deleteNotification.js:5 ~ exports.deletenotification ~ notification_id", notification_id)
     let user=req.user;
     await Notification.deleteOne({_id:notification_id,notification_for:user.address});
 
@@ -34,8 +33,6 @@ exports.unreadnotification= async (req, res) => {
         count=0;
     }
     
-    console.log("🚀 ~ file: notificationdata.js:29 ~ exports.unreadnotification= ~ count", count)
-
     res.send({status:"success",count});
 
 }
