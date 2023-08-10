@@ -3,26 +3,37 @@ const mongosse = require("mongoose");
 
 const transactionSchema = new mongosse.Schema({
 
-    sellerName: {
+    type: {
         type: String,
         required: true,
+        trim: true,
+    },
+    tokenId: {
+        type: Number,
+        required: true,
+        trim: true,
+    },
+    original: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    sellerName: {
+        type: String,
         trim: true,
     },
     sellerProfile: {
         type: String,
-        required: true,
         trim: true,
     },
     sellerId: {
         type: String,
-        required: true,
         trim: true,
     },
     ownerName: {
         type: String,
         required: true,
         trim: true,
-        lowercase: true,
     },
     ownerProfile: {
         type: String,

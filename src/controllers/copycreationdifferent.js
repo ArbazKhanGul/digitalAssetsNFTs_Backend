@@ -4,11 +4,11 @@ const Nonce = require('../database/nonceschema');
 const sign = require("../utils/sign")
 const bnb_price = require("../utils/price")
 const CopyRight=require("../database/copyrightschema")
+const User = require('../database/user');
 
 exports.copycreationdifferent = async (req, res) => {
 
   const nftFrontend = req.body;
-  console.log("🚀 ~ file: nftcreation.js:53 ~ exports.nftCreation= ~ nftFrontend:", nftFrontend)
   const user = req.user;
 
 
@@ -42,14 +42,14 @@ exports.copycreationdifferent = async (req, res) => {
     }
 
     const nextCount = await Nonce.getNextCount();
-    console.log("🚀 ~ file: copycreation.js:32 ~ exports.copycreation= ~ nextCount:", nextCount)
 
-    const signature = await sign(nftFrontend.tokenId + "_" + nextCount);
+    const signature = await sign(nftFrontend.tokenId , nextCount,0,user.address);
 
 
     res.send({
       status: "success", nonce: nextCount, signature
-      , price: estimated_price_inDollar
+      , price: estimated_price_inDollar,copyrightPrice:0,copyrightOwner:user.address
+
     })
   }
   else {
@@ -74,7 +74,7 @@ exports.copycreationdifferent = async (req, res) => {
 
 
       const saved_nft = await nft.save();
-      
+
       await CopyRight.findByIdAndUpdate(copyrightRequest._id,{
         $set:{tokenURI:nftFrontend.metadataURL}
       })
@@ -86,14 +86,16 @@ exports.copycreationdifferent = async (req, res) => {
       }
 
       const nextCount = await Nonce.getNextCount();
-      console.log("🚀 ~ file: copycreation.js:32 ~ exports.copycreation= ~ nextCount:", nextCount)
 
-      const signature = await sign(nftFrontend.tokenId + "_" + nextCount);
+      let ownerAddress=await User.findById(copyrightRequest.actionUserId,{address:1});
+      const signature = await sign(nftFrontend.tokenId , nextCount,copyrightRequest.offeredMoney,ownerAddress.address);
 
 
       res.send({
         status: "success", nonce: nextCount, signature
-        , price: estimated_price_inDollar+copyrightRequest.offeredMoney
+        , price: estimated_price_inDollar+copyrightRequest.offeredMoney,
+        copyrightPrice:copyrightRequest.offeredMoney,copyrightOwner:ownerAddress.address
+        
       })
     }
     else {

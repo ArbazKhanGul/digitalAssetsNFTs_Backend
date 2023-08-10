@@ -51,6 +51,10 @@ const notificationSchema = new mongosse.Schema({
         type: String,
         trim: true,
     },
+    copyNftId:{
+        type: String,
+        trim: true,
+    },
 },
     { timestamps: true },
 );

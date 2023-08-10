@@ -37,7 +37,7 @@ const copyrightSchema = new mongosse.Schema({
   tokenURI: {
     type: String,
     trim: true,  },
-    
+
   actionUserName: {
     type: String,
     trim: true,  },

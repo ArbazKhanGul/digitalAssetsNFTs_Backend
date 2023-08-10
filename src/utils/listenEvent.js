@@ -13,7 +13,7 @@ module.exports = async function listenEvent() {
 
     const Abi = [
         //Event
-        "event Creation(address indexed owner_address,uint indexed tokenId,string tokenURI,bool copyright)",
+        "event Creation(address indexed owner_address,uint indexed tokenId,string tokenURI,bool copyright,uint copyrightprice,address copyrightOwner)",
         "event ApprovalMarketplace(uint tokenId)",
         "function creatorOf(uint tokenId) public view returns(address)"
     ];
@@ -35,15 +35,15 @@ module.exports = async function listenEvent() {
 
     provider.once("block",() =>  {
 
-    nftContract.on("Creation", async (owner_address, tokenId, tokenURI,copyright, event) => {
-       
-        console.log("🚀 ~ file: listenEvent.js:39 ~ nftContract.on ~ tokenURI:", tokenURI)
-        console.log("🚀 ~ file: listenEvent.js:38 ~ nftContract.on ~ copyright:", copyright)
+    nftContract.on("Creation", async (owner_address, tokenId, tokenURI,copyright, copyrightPrice,copyrightOwner, event) => {
 
-        console.log("running")
+       console.log("🚀 ~ file: listenEvent.js:39 ~ nftContract.on ~ copyrightprice:", copyrightPrice.toString());
+       console.log("🚀 ~ file: listenEvent.js:39 ~ nftContract.on ~ copyrightOwner:", copyrightOwner);
+
         try {
             let url=process.env.IPFSURL;
             let substr=tokenURI.substring(url.length);
+
 
             const result = await NFT.findOneAndUpdate({ tokenURI: substr }, {
                 $set: {
@@ -51,17 +51,43 @@ module.exports = async function listenEvent() {
                 }
             },{ new: true, useFindAndModify:false })
 
-            if(copyright){
 
-              let copyrightresult=  await CopyRight.findOneAndUpdate({tokenURI:substr,status:"accept"},{
+            let owner=  await User.findOneAndUpdate({ address: owner_address }, {
+                $inc: { itemsCreated: 1 }
+            },{ new: true, useFindAndModify:false })
+
+
+            let transaction=new Transaction({type:"create",tokenId:tokenId.toString(),ownerProfile:owner.profile,ownerId:owner._id,ownerName:owner.authorName,
+            nftId:result._id,nftName:result.nftName,original:result?.original
+            })
+
+            await transaction.save();
+
+            if(copyright && owner_address!=copyrightOwner){
+
+            let copyrightresult=  await CopyRight.findOneAndUpdate({tokenURI:substr,status:"accept"},{
                     $set:{status:"completed"}
-                });
-              console.log("🚀 ~ file: listenEvent.js:60 ~ copyrightresult ~ copyrightresult:", copyrightresult)
+                },{ new: true, useFindAndModify:false });
+
+                let original_nft=await NFT.findOne({nftName:result.nftName,original:true});
+
+                const notification=new Notification({
+                    notification_for:copyrightOwner,
+                    nftName:original_nft.nftName,
+                    nftId:original_nft.tokenURI,
+                    owner_profile:owner.profile,
+                    ownerId:owner._id,
+                    type:`copyright_money`,
+                    price:copyrightPrice.toString(),
+                    transfer_to:owner.authorName,
+                    copyrightId:copyrightresult._id,
+                    copyNftId:result.tokenURI
+                  })
+                      await notification.save();
+
             }
 
-            await User.updateOne({ address: owner_address }, {
-                $inc: { itemsCreated: 1 }
-            })
+
 
         }
         catch (error) {
@@ -152,22 +178,29 @@ copyrightStatus:"notallowed",copyrightPrice:0},
                 $inc: { lastPrice: sellingPrice.toString() }
             },{returnDocument: 'before'})
 
-            console.log("🚀 ~ file: listenEvent.js:135 ~ result ~ result", result)
 
-
+           
+     
             //incremnent the previous owner volume
       let sellerProfile=await User.findOneAndUpdate({ address: seller }, {
                 $inc: { volume: sellingPrice.toString(), itemsSell: 1 }
-            })
+            },{returnDocument: 'before'});
+
+
 
      let ownerProfile=  await User.findOneAndUpdate({ address: owner }, {
                 $inc: { itemsBuy: 1 }
-            })
+            },{returnDocument: 'before'})
+
+
+           await CopyRight.updateMany({ownerId:sellerProfile._id},{$set:{ownerId:ownerProfile._id
+        ,ownerName:ownerProfile.authorName,ownerProfile:ownerProfile.profile}});
+
 
         //insert latest transaction
-            let transaction=new Transaction({sellerProfile: sellerProfile.profile,sellerName:sellerProfile.authorName,
-                sellerId:sellerProfile._id,ownerProfile:ownerProfile.profile,ownerId:ownerProfile.id,ownerName:ownerProfile.authorName,
-             price:sellingPrice.toString(),nftId:result._id
+            let transaction=new Transaction({type:"sell",tokenId:tokenId.toString(),sellerProfile: sellerProfile.profile,sellerName:sellerProfile.authorName,
+                sellerId:sellerProfile._id,ownerProfile:ownerProfile.profile,ownerId:ownerProfile._id,ownerName:ownerProfile.authorName,
+             price:sellingPrice.toString(),nftId:result._id,original:result?.original
             })
             await transaction.save();
 

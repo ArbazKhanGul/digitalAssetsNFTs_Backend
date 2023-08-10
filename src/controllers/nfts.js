@@ -4,11 +4,13 @@ exports.nft = async (req, res) => {
 
 
     let id = req.params.id;
-    console.log("🚀 ~ file: collection.js ~ line 6 ~ exports.collection= ~ id", id)
     let query = req.query
-    console.log("🚀 ~ file: collection.js ~ line 7 ~ exports.collection= ~ query", query)
+
 
     let matchQuery={status:{$ne:"notVerified"}};
+    
+  if(query['nftType']=="original"){matchQuery.original = true}
+  if(query['nftType']=="copy"){matchQuery.original = false}
   if(query['nftName']!==undefined) {matchQuery.nftName = query['nftName']}
   if(query['ownerEmail']!==undefined) {matchQuery.owner_email = query['ownerEmail']}
   if(query['creatorEmail']!==undefined) {matchQuery.creator_email = query['creatorEmail']}

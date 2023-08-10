@@ -32,6 +32,7 @@ const { cancelcopyright } = require("../controllers/cancelcopyright");
 const { allowcopyright } = require("../controllers/allowcopyright");
 const { copyrightdelete } = require("../controllers/deletecopyright");
 const { copynonce } = require("../controllers/copynonce");
+const { transactions } = require("../controllers/transactions");
 
 const multiupload=store.fields([{name: 'profile',maxCount:1},{name: 'cover',maxCount:1}]);
 // const multiuploadUpdate=storeUpdate.fields([{name: 'profile',maxCount:1},{name: 'cover',maxCount:1}]);
@@ -77,6 +78,9 @@ router.get("/getcollection/:id",collection)
 
 //get all nfts
 router.get("/getnfts/:id",nft)
+
+//get all transactions
+router.get("/gettransactions/:id",transactions)
 
 //nftCreation
 router.post("/nftCreation",authenticate,nftCreation)

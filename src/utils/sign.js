@@ -1,13 +1,14 @@
 const { ethers } = require('ethers');
 
-module.exports =async function signMessage(message) {
-console.log("🚀 ~ file: sign.js:4 ~ signMessage ~ message:", message)
+module.exports =async function signMessage(token,nonce,price,address) {
+
 const privateKey = process.env.PRIVATE_KEY;
 const signer = new ethers.Wallet(privateKey);
 
-const messageHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(message))
-const signedMessage = await signer.signMessage(ethers.utils.arrayify(messageHash));
-console.log(signedMessage);
+const message = ethers.utils.solidityKeccak256(['uint256','uint256','address','uint256'], [token, nonce,address,price]);
+
+const signedMessage = await signer.signMessage(ethers.utils.arrayify(message));
+
 
 return signedMessage;
 

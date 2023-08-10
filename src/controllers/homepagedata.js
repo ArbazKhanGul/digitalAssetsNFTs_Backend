@@ -33,7 +33,8 @@ exports.homepagedata = async (req, res) => {
             "title":1,
             "tokenURI":1,
             "contentURI":1,
-            "contentType":1
+            "contentType":1,
+            "original":1
           }
         },
           { "$limit": 8 }
