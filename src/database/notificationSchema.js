@@ -14,7 +14,6 @@ const notificationSchema = new mongosse.Schema({
     },
     owner_profile: {
         type: String,
-        required: true,
         trim: true,
     },
     type: {
@@ -25,17 +24,14 @@ const notificationSchema = new mongosse.Schema({
     },
     nftName: {
         type: String,
-        required: true,
         trim: true,
     },
     nftId:{
         type: String,
-        required: true,
         trim: true,
     },
     ownerId:{
         type: String,
-        required: true,
         trim: true,
     },
     price: {
@@ -55,6 +51,15 @@ const notificationSchema = new mongosse.Schema({
         type: String,
         trim: true,
     },
+    userId:{
+        type: String,
+        trim: true,
+    },
+    userName:{
+        type: String,
+        trim: true,
+    }
+
 },
     { timestamps: true },
 );

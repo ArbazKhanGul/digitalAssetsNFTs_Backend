@@ -5,12 +5,14 @@ const store=require("../middleware/multer");
 const {getNonceLogin, login}=require("../controllers/login");
 const {userRegisteration}=require("../controllers/registeration");
 const {sendEmail,emailVerify}=require("../controllers/email");
-const {authenticate}=require("../middleware/authentication");
+const {authenticate,adminAuthenticate}=require("../middleware/authentication");
 const {profile, profileUpdate}=require("../controllers/profile");
-const {verify}=require("../controllers/authentication")
+const {verify,adminVerify}=require("../controllers/authentication")
 const {logout}=require("../controllers/logout")
 const {collection}=require("../controllers/collection")
-const {nftCreation, nftNameVerification}=require("../controllers/nftcreation")
+
+const {nftCreation, nftVerification, nftCreationFee}=require("../controllers/nft/nftcreation")
+
 const {individualnft}=require("../controllers/individualnft")
 const {individualprofile}=require("../controllers/individualprofile")
 const {nftSelling}=require("../controllers/nftselling")
@@ -33,6 +35,12 @@ const { allowcopyright } = require("../controllers/allowcopyright");
 const { copyrightdelete } = require("../controllers/deletecopyright");
 const { copynonce } = require("../controllers/copynonce");
 const { transactions } = require("../controllers/transactions");
+const { buyingoptions } = require("../controllers/buyingoptions");
+const { adminbuydata } = require("../controllers/adminbuydata");
+const { profileInfo } = require("../controllers/profile/profile");
+const { dashboardData, dashboardFeeUpdate } = require("../controllers/admin/dashboard");
+const { copycreationfee } = require("../controllers/copy/copy");
+
 
 const multiupload=store.fields([{name: 'profile',maxCount:1},{name: 'cover',maxCount:1}]);
 // const multiuploadUpdate=storeUpdate.fields([{name: 'profile',maxCount:1},{name: 'cover',maxCount:1}]);
@@ -69,12 +77,22 @@ router.patch("/profileUpdate",authenticate,multiupload,profileUpdate);
 
 //verification
 router.get("/verify",verify);
+router.get("/adminverify",adminVerify);
+
+//adminDashboard
+router.get("/dashboarddata",adminAuthenticate,dashboardData);
+
+router.post("/dashboardfeeupdate",adminAuthenticate,dashboardFeeUpdate);
 
 //logout
 router.get("/logout",logout)
 
 //collection
 router.get("/getcollection/:id",collection)
+
+//cprofile
+router.get("/getprofile",profileInfo)
+
 
 //get all nfts
 router.get("/getnfts/:id",nft)
@@ -86,7 +104,7 @@ router.get("/gettransactions/:id",transactions)
 router.post("/nftCreation",authenticate,nftCreation)
 
 //nftCreation
-router.post("/nftnameverify",authenticate,nftNameVerification)
+router.post("/nftverify",authenticate,nftVerification)
 
 
 //individualnft
@@ -151,7 +169,18 @@ router.post("/copyrightallow",authenticate,allowcopyright);
 
 router.get("/copynonce/:id",authenticate,copynonce);
 
+router.post("/copyfee",authenticate,copycreationfee)
+
 router.delete("/copyrightdelete/:delete_id",authenticate,copyrightdelete);
 
+//change buying options
+router.post("/changebuyingoption",adminAuthenticate,buyingoptions);
+
+//change buying options
+router.get("/adminbuydata",adminAuthenticate,adminbuydata);
+
+
+//get nft creation fee
+router.get("/nftfee",authenticate,nftCreationFee);
 
 module.exports = router;

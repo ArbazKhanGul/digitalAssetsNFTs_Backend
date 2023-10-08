@@ -2,6 +2,7 @@ require("express-async-errors");
 const express = require("express");
 require("dotenv").config();
 const router = require("./src/Router/router");
+const stripe_router=require("./src/Router/srtripe_router")
 const cors = require("cors");
 const morgan = require("morgan");
 require("./src/database/connection");
@@ -42,7 +43,9 @@ app.use(express.static("public"));
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "/src/views"));
 // app.use(morgan('combined'));
-app.use(express.json());
+app.use(express.json({
+  verify:(req,res,buffer)=>req['rawBody']=buffer
+}));
 app.use(express.urlencoded({ extended: true }));
 
 
@@ -66,6 +69,7 @@ app.use(session({
   
 ///allroutes
 app.use(router);
+app.use(stripe_router);
 
 //images host
 app.use("/images",express.static("images"));

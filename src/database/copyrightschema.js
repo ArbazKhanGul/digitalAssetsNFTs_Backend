@@ -7,7 +7,12 @@ const copyrightSchema = new mongosse.Schema({
     type: String,
     required: true,
     trim: true,
-   },
+  },
+  tokenId: {
+    type: String,
+    required: true,
+    trim: true,
+  },
   nftId: {
     type: String,
     required: true,
@@ -22,13 +27,20 @@ const copyrightSchema = new mongosse.Schema({
   requestorName: {
     type: String,
     required: true,
-    trim: true,  },
+    trim: true,
+  },
+
+  requestorAddress: {
+    type: String,
+    required: true,
+    trim: true,
+  },
 
   requesterId: {
     type: String,
     required: true,
     trim: true,
-      },
+  },
   requestorProfile: {
     type: String,
     required: true,
@@ -36,16 +48,18 @@ const copyrightSchema = new mongosse.Schema({
   },
   tokenURI: {
     type: String,
-    trim: true,  },
+    trim: true,
+  },
 
   actionUserName: {
     type: String,
-    trim: true,  },
+    trim: true,
+  },
 
   actionUserId: {
     type: String,
     trim: true,
-      },
+  },
   actionUserProfile: {
     type: String,
     trim: true,
@@ -54,26 +68,34 @@ const copyrightSchema = new mongosse.Schema({
     type: String,
     required: true,
     trim: true,
-     },
+  },
   ownerId: {
     type: String,
     required: true,
     trim: true,
-    },
+  },
   ownerProfile: {
     type: String,
     required: true,
     trim: true,
-    },
+  },
   comments: {
     type: String,
     trim: true,
-   },
+  },
+  signature: {
+    type: String,
+    trim: true,
+  },
   status: {
     type: String,
     default: "pending",
     trim: true,
     required: true
+  },
+  requestNonce: {
+      type: Number,
+      required:true
   },
 
 },

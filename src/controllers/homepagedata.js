@@ -18,7 +18,7 @@ exports.homepagedata = async (req, res) => {
                         "itemsCreated":1
                       }},
                       { "$sort" : { volume : -1 } },
-                      { "$limit": 9 }
+                      { "$limit": 8}
     ])
 
     const nfts = await NFT.aggregate([

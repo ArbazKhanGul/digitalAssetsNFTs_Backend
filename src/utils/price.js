@@ -8,26 +8,25 @@ module.exports= async function price(size,type) {
 
      let inDollar=(1 / ticker.BNBUSDT).toFixed(18);
 
-     
-
     var estimated_price_inDollar=0;
 
-    if(size > 500 && type=="text")
+
+    if(size > 1000 && type=="text")
     {
     inDollar = (inDollar / 10).toFixed(18);
-    console.log("🚀 ~ file: price.js:18 ~ price ~ inDollar:", inDollar)
-    estimated_price_inDollar=(size-1) / 500;
+    estimated_price_inDollar=(size-1) / 1000;
     estimated_price_inDollar= Math.floor(estimated_price_inDollar);
     estimated_price_inDollar=inDollar * estimated_price_inDollar;
     estimated_price_inDollar = ethers.utils.parseUnits(estimated_price_inDollar.toString(), "ether");
     }
-    else if(size > 100 && type=="media"){
+    else if(size > 50 && type=="media"){
       let con=Math.ceil(size);
-      estimated_price_inDollar=(con-1) / 100;
+      estimated_price_inDollar=(con-1) / 50;
       estimated_price_inDollar= Math.floor(estimated_price_inDollar);
       estimated_price_inDollar=inDollar * estimated_price_inDollar;
       estimated_price_inDollar = ethers.utils.parseUnits(estimated_price_inDollar.toString(), "ether");
     }
 
     return estimated_price_inDollar;
+
   };

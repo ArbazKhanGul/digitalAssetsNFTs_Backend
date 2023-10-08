@@ -9,7 +9,7 @@ exports.copynft = async (req, res) => {
 
     let nftresult = await NFT.aggregate([
         { "$match": { tokenURI: nft_id, status: { $ne: "notVerified" } } },
-        { "$project": { owner_address: 1, creator_address: 1, tokenURI: 1, tokenId: 1, nftName: 1, copyrightStatus: "allowed",contentType:1} },
+        { "$project": { owner_address: 1, creator_address: 1, tokenURI: 1, tokenId: 1, nftName: 1,contentURI:1, copyrightStatus: "allowed",contentType:1} },
         {
             "$lookup": {
                 from: "signupforms",
@@ -59,14 +59,14 @@ exports.copynft = async (req, res) => {
         nftresult = nftresult[0];
 
         if (nftresult.owner_address == user.address) {
-            res.send({ status: "success", nftData: nftresult, user })
+            res.send({ status: "success", nftData: nftresult, user ,copyrightPrice:0})
              return;
         }
         else{
              let copyrightRequest=await Copyright.findOne({requesterId:user._id,status:"accept"});
             if(copyrightRequest)
              {
-                res.send({ status: "success", nftData: nftresult, user })
+                res.send({ status: "success", nftData: nftresult, user,copyrightPrice:copyrightRequest.offeredMoney})
                 return;
              }
         }

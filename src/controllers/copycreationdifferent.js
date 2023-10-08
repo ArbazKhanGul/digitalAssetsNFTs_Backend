@@ -73,12 +73,12 @@ exports.copycreationdifferent = async (req, res) => {
       })
 
 
-      const saved_nft = await nft.save();
+       await nft.save();
 
       await CopyRight.findByIdAndUpdate(copyrightRequest._id,{
         $set:{tokenURI:nftFrontend.metadataURL}
       })
-      
+
       let estimated_price_inDollar = 0;
 
       if (nftFrontend.nftContentType != "image") {
@@ -90,12 +90,10 @@ exports.copycreationdifferent = async (req, res) => {
       let ownerAddress=await User.findById(copyrightRequest.actionUserId,{address:1});
       const signature = await sign(nftFrontend.tokenId , nextCount,copyrightRequest.offeredMoney,ownerAddress.address);
 
-
       res.send({
         status: "success", nonce: nextCount, signature
         , price: estimated_price_inDollar+copyrightRequest.offeredMoney,
         copyrightPrice:copyrightRequest.offeredMoney,copyrightOwner:ownerAddress.address
-        
       })
     }
     else {

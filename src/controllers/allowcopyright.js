@@ -9,6 +9,7 @@ exports.allowcopyright = async (req, res) => {
     let user = req?.session?.user
 
     
+    
     const result = await NFT.updateOne({ tokenURI: id,ownerId:user._id},{
         $set: {
             copyrightStatus: "allowed", copyrightPrice: price

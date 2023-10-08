@@ -2,6 +2,7 @@ const User= require('../database/user');
 var CopyRight = require('../database/copyrightschema');
 const NFT= require('../database/nftschema');
 const Notification = require("../database/notificationSchema");
+const Nonce = require('../database/nonceschema');
 
 exports.copyright = async (req, res) => {
 
@@ -12,19 +13,28 @@ exports.copyright = async (req, res) => {
     let nftOwner = await User.findOne({ _id:ownerId});
 
     let nft =  await NFT.findOne({ nftName: nftName, status: { $ne: "notVerified" } }, {
-      tokenURI:1
+      tokenURI:1,tokenId:1
   });
+
+  if(!nft || !nftOwner){
+    throw new Error("NFT not found")
+  }
+
+  const nextCount = await Nonce.getNextCount();
 
     const copyright = new CopyRight({
         nftName: nftName,
         nftId:nft.tokenURI,
+        tokenId:nft.tokenId,
         offeredMoney:offeredMoney,
+        requestorAddress:user.address,
         requestorName:user?.authorName,
         requestorProfile:user?.profile,
         requesterId:user._id,
         ownerName:nftOwner?.authorName,
         ownerProfile:nftOwner?.profile,
         ownerId:nftOwner._id,
+        requestNonce:nextCount
       })
 
    let copyreq=   await copyright.save();

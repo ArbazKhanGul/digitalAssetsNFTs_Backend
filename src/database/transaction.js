@@ -13,20 +13,20 @@ const transactionSchema = new mongosse.Schema({
         required: true,
         trim: true,
     },
-    original: {
-        type: String,
-        required: true,
-        trim: true,
-    },
-    sellerName: {
-        type: String,
-        trim: true,
-    },
-    sellerProfile: {
+    original:{
+        type:Boolean,
+        default: true
+       },
+       
+    buyerName: {
         type: String,
         trim: true,
     },
-    sellerId: {
+    buyerProfile: {
+        type: String,
+        trim: true,
+    },
+    buyerId: {
         type: String,
         trim: true,
     },
@@ -36,6 +36,11 @@ const transactionSchema = new mongosse.Schema({
         trim: true,
     },
     ownerProfile: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    nftName: {
         type: String,
         required: true,
         trim: true,

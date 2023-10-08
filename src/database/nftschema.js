@@ -16,6 +16,12 @@ const nftSchema = new mongosse.Schema({
     trim : true
   },
 
+  hash: {
+    type: String,
+    required: true,
+    trim : true
+  },
+
   originalTokenURI: {
     type: String,
     trim : true,
@@ -24,6 +30,10 @@ const nftSchema = new mongosse.Schema({
   contentType: {
     type: String,
     required: true,
+    trim : true
+  },
+  language: {
+    type: String,
     trim : true
   },
   tokenURI: {

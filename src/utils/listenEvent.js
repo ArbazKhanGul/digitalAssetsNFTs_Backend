@@ -58,7 +58,7 @@ module.exports = async function listenEvent() {
 
 
             let transaction=new Transaction({type:"create",tokenId:tokenId.toString(),ownerProfile:owner.profile,ownerId:owner._id,ownerName:owner.authorName,
-            nftId:result._id,nftName:result.nftName,original:result?.original
+            nftId:result.tokenURI,nftName:result.nftName,original:result?.original
             })
 
             await transaction.save();
@@ -87,8 +87,6 @@ module.exports = async function listenEvent() {
 
             }
 
-
-
         }
         catch (error) {
             console.log("🚀 ~ file: listenEvent.js ~ line 24 ~ nftContract.on ~ error", error)
@@ -101,7 +99,6 @@ module.exports = async function listenEvent() {
     provider.once("block",() =>  {
     nftContract.on("ApprovalMarketplace", async (tokenId, event) => {
         try {
-           
             const result = await NFT.updateOne({ tokenId: tokenId.toString() }, {
                 $set: {
                     approved: true
@@ -174,7 +171,7 @@ module.exports = async function listenEvent() {
             const result = await NFT.findOneAndUpdate({ tokenId: tokenId.toString() }, {
                 $set: {
                     status: "verified", currentSellingId: 0, price: 0, owner_address: address, owner_email: users.email, approved: false,
-copyrightStatus:"notallowed",copyrightPrice:0},
+              copyrightStatus:"notallowed",copyrightPrice:0},
                 $inc: { lastPrice: sellingPrice.toString() }
             },{returnDocument: 'before'})
 
@@ -182,27 +179,31 @@ copyrightStatus:"notallowed",copyrightPrice:0},
            
      
             //incremnent the previous owner volume
-      let sellerProfile=await User.findOneAndUpdate({ address: seller }, {
+         let sellerProfile=await User.findOneAndUpdate({ address: seller }, {
                 $inc: { volume: sellingPrice.toString(), itemsSell: 1 }
             },{returnDocument: 'before'});
 
 
 
-     let ownerProfile=  await User.findOneAndUpdate({ address: owner }, {
+          let ownerProfile=  await User.findOneAndUpdate({ address: owner }, {
                 $inc: { itemsBuy: 1 }
             },{returnDocument: 'before'})
 
 
            await CopyRight.updateMany({ownerId:sellerProfile._id},{$set:{ownerId:ownerProfile._id
-        ,ownerName:ownerProfile.authorName,ownerProfile:ownerProfile.profile}});
+           ,ownerName:ownerProfile.authorName,ownerProfile:ownerProfile.profile}});
 
+           await CopyRight.updateMany({status:"accept"},{$set:{status:"reapproval",actionUserId:"",actionUserName:"",
+           actionUserProfile:"",comments:"",signature:"",
+        }});
 
         //insert latest transaction
-            let transaction=new Transaction({type:"sell",tokenId:tokenId.toString(),sellerProfile: sellerProfile.profile,sellerName:sellerProfile.authorName,
-                sellerId:sellerProfile._id,ownerProfile:ownerProfile.profile,ownerId:ownerProfile._id,ownerName:ownerProfile.authorName,
-             price:sellingPrice.toString(),nftId:result._id,original:result?.original
+            let transaction=new Transaction({type:"sell",tokenId:tokenId.toString(),ownerProfile: sellerProfile.profile,ownerName:sellerProfile.authorName,
+                ownerId:sellerProfile._id,buyerProfile:ownerProfile.profile,buyerId:ownerProfile._id,buyerName:ownerProfile.authorName,
+             price:ethers.utils.formatUnits(sellingPrice.toLocaleString('fullwide', { useGrouping: false }), 18) ,nftId:result.tokenURI,original:result?.original,nftName:result.nftName
             })
             await transaction.save();
+
 
             //insert notification
             let insertObj = [];
@@ -243,7 +244,7 @@ copyrightStatus:"notallowed",copyrightPrice:0},
         try {
             const result = await NFT.updateOne({ currentSellingId: itemId.toString() }, {
                 $set: {
-                    status: "verified", currentSellingId: 0, price: 0
+                    status: "verified", currentSellingId: 0, price: 0,approved:false
                 }
             })
             

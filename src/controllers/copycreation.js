@@ -28,14 +28,14 @@ exports.copycreation = async (req, res) => {
       originalTokenURI: nftFrontend.originalTokenURI
     })
 
-    const saved_nft = await nft.save();
+    await nft.save();
 
-    const nextCount = await Nonce.getNextCount();
+    // const nextCount = await Nonce.getNextCount();
 
 
-    const signature = await sign(nftFrontend.tokenId , nextCount,0,user.address);
+    // const signature = await sign(nftFrontend.tokenId , nextCount,0,user.address);
 
-    res.send({ status: "success", nonce: nextCount, signature, price: 0 ,copyrightPrice:0,copyrightOwner:user.address})
+    res.send({ status: "success", nonce: 0, signature:"0x",copyrightPrice:0})
   }
   else 
   {
@@ -43,7 +43,7 @@ exports.copycreation = async (req, res) => {
         let copyrightRequest=await CopyRight.findOne({requesterId:user._id,status:"accept",nftName:nftFrontend.nftName});
 
         if(copyrightRequest){
-         
+
           const nft = new NFT({
             nftName: nftFrontend.nftName,
             original: false,
@@ -59,22 +59,22 @@ exports.copycreation = async (req, res) => {
           })
         
 
-          const saved_nft = await nft.save();
+         await nft.save();
 
           await CopyRight.findByIdAndUpdate(copyrightRequest._id,{
             $set:{tokenURI:nftFrontend.metadataURL}
           })
 
-          const nextCount = await Nonce.getNextCount();
+          // const nextCount = await Nonce.getNextCount();
 
 
-          let ownerAddress=await User.findById(copyrightRequest.actionUserId,{address:1});
+          // let ownerAddress=await User.findById(copyrightRequest.actionUserId,{address:1});
 
-          const signature = await sign(nftFrontend.tokenId , nextCount,copyrightRequest.offeredMoney,ownerAddress.address);
+          // const signature = await sign(nftFrontend.tokenId , nextCount,copyrightRequest.offeredMoney,ownerAddress.address);
 
           res.send({
-            status: "success", nonce: nextCount, signature
-              ,price:copyrightRequest.offeredMoney,copyrightPrice:copyrightRequest.offeredMoney,copyrightOwner:ownerAddress.address
+            status: "success", nonce: copyrightRequest.requestNonce,signature: copyrightRequest.signature,
+               copyrightPrice:copyrightRequest.offeredMoney
           })
 
         }
