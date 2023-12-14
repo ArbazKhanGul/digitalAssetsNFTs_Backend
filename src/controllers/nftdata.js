@@ -7,6 +7,7 @@ exports.nftdata = async (req, res) => {
 
     let id = req.params.id;
     let { nftName, nftId, original } = req.query;
+    console.log("🚀 ~ file: nftdata.js:10 ~ exports.nftdata= ~ nftId:", nftId)
     let user = req?.session?.user;
 
     let matchQuery = { owner_email: id, nftName: { $ne: nftName }, status: { $ne: "notVerified" } };
@@ -49,7 +50,7 @@ exports.nftdata = async (req, res) => {
 
     const user_profile = await User.findOne({ email: id }, { _id: 1 });
 
-    const transactions = await Transaction.find({ nftId: nftId }).sort({ createdDate: -1 }).limit(3);
+    const transactions = await Transaction.find({ nftId: nftId,type:"sell" }).sort({ createdDate: -1 }).limit(3);
 
     let copyright_status = false;
 

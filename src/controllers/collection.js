@@ -7,7 +7,14 @@ exports.collection = async (req, res) => {
     let query = req.query
   
     let matchQuery={verify: { $ne: false }};
-  if(query['authorName']!==undefined) {matchQuery.authorName = query['authorName']}
+  if(query['authorName']!==undefined) {
+    const regexQuery = {
+        authorName: {
+          $regex: new RegExp(query['authorName'], 'i'), // 'i' for case-insensitive
+        },
+      };
+    matchQuery.authorName = regexQuery.authorName;
+}
   if(query['email']!==undefined) {matchQuery.email = query['email']}
   if(query['walletAddress']!==undefined) {matchQuery.walletAddress = query['walletAddress']}
 

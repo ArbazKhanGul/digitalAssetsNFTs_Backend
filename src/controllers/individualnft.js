@@ -15,7 +15,8 @@ exports.individualnft = async (req, res) => {
         original:1,
         originalTokenURI:1,
         copyrightStatus:1,
-        copyrightPrice:1
+        copyrightPrice:1,
+        original:1
     });
     
     console.log("🚀 ~ file: individualnft.js:19 ~ exports.individualnft= ~ result:", result)

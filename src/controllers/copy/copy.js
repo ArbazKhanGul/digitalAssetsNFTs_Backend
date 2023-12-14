@@ -8,8 +8,21 @@ exports.copycreationfee=async (req,res)=>{
 
     const size=req.body.size;
   const contentType=req.body.contentType;
+  const hash=req.body.hash;
+  console.log("🚀 ~ file: copy.js:12 ~ exports.copycreationfee= ~ hash:", hash)
 
  let estimated_price_inDollar=0;
+
+ if(hash){
+  const checkHash = await NFT.findOne({hash: hash})
+  console.log("🚀 ~ file: copy.js:17 ~ exports.copycreationfee= ~ checkHash:", checkHash)
+ if(checkHash){
+  res.send({ status: "duplicate",result:checkHash})
+   return;
+ }
+ }
+
+
  if(contentType!="image"){
   estimated_price_inDollar=await bnb_price(size,contentType);
  }

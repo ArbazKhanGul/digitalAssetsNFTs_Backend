@@ -18,7 +18,7 @@ const nftSchema = new mongosse.Schema({
 
   hash: {
     type: String,
-    required: true,
+    // required: true,
     trim : true
   },
 
