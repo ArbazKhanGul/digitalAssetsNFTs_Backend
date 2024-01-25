@@ -12,6 +12,8 @@ const wallet = new ethers.Wallet(privateKey, provider);
 
 
 exports.webhook=async (req, res) =>{
+
+    console.log("stripe webhook is running");
     const sig = req.headers['stripe-signature'];
     let event;
 

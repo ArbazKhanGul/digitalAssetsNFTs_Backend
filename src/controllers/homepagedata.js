@@ -20,6 +20,8 @@ exports.homepagedata = async (req, res) => {
                       { "$sort" : { volume : -1 } },
                       { "$limit": 8}
     ])
+    
+    console.log("🚀 ~ file: homepagedata.js:23 ~ exports.homepagedata= ~ profiles:", profiles)
 
     const nfts = await NFT.aggregate([
         { "$match": matchQueryNft },
