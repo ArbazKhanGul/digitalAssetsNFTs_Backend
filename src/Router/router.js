@@ -5,12 +5,14 @@ const store=require("../middleware/multer");
 const {getNonceLogin, login}=require("../controllers/login");
 const {userRegisteration}=require("../controllers/registeration");
 const {sendEmail,emailVerify}=require("../controllers/email");
-const {authenticate}=require("../middleware/authentication");
+const {authenticate,adminAuthenticate}=require("../middleware/authentication");
 const {profile, profileUpdate}=require("../controllers/profile");
-const {verify}=require("../controllers/authentication")
+const {verify,adminVerify}=require("../controllers/authentication")
 const {logout}=require("../controllers/logout")
 const {collection}=require("../controllers/collection")
-const {nftCreation}=require("../controllers/nftcreation")
+
+const {nftCreation, nftVerification, nftCreationFee}=require("../controllers/nft/nftcreation")
+
 const {individualnft}=require("../controllers/individualnft")
 const {individualprofile}=require("../controllers/individualprofile")
 const {nftSelling}=require("../controllers/nftselling")
@@ -21,7 +23,23 @@ const {homepagedata}=require("../controllers/homepagedata");
 const {profilenft}=require("../controllers/profilenft");
 const {nftdata}=require("../controllers/nftdata");
 const {deletenotification, unreadnotification}=require("../controllers/notificationdata");
-
+const { copyright } = require("../controllers/copyright");
+const {copyrightdata}=require("../controllers/copyrightdata");
+const {copyrightrequests}=require("../controllers/copyrightrequests");
+const { copyrightaction } = require("../controllers/copyrightaction");
+const { copynft } = require("../controllers/copynft");
+const { copycreation } = require("../controllers/copycreation");
+const { copycreationdifferent } = require("../controllers/copycreationdifferent");
+const { cancelcopyright } = require("../controllers/cancelcopyright");
+const { allowcopyright } = require("../controllers/allowcopyright");
+const { copyrightdelete } = require("../controllers/deletecopyright");
+const { copynonce } = require("../controllers/copynonce");
+const { transactions } = require("../controllers/transactions");
+const { buyingoptions } = require("../controllers/buyingoptions");
+const { adminbuydata } = require("../controllers/adminbuydata");
+const { profileInfo } = require("../controllers/profile/profile");
+const { dashboardData, dashboardFeeUpdate } = require("../controllers/admin/dashboard");
+const { copycreationfee } = require("../controllers/copy/copy");
 
 
 const multiupload=store.fields([{name: 'profile',maxCount:1},{name: 'cover',maxCount:1}]);
@@ -59,6 +77,12 @@ router.patch("/profileUpdate",authenticate,multiupload,profileUpdate);
 
 //verification
 router.get("/verify",verify);
+router.get("/adminverify",adminVerify);
+
+//adminDashboard
+router.get("/dashboarddata",adminAuthenticate,dashboardData);
+
+router.post("/dashboardfeeupdate",adminAuthenticate,dashboardFeeUpdate);
 
 //logout
 router.get("/logout",logout)
@@ -66,11 +90,21 @@ router.get("/logout",logout)
 //collection
 router.get("/getcollection/:id",collection)
 
+//cprofile
+router.get("/getprofile",profileInfo)
+
+
 //get all nfts
 router.get("/getnfts/:id",nft)
 
+//get all transactions
+router.get("/gettransactions/:id",transactions)
+
 //nftCreation
 router.post("/nftCreation",authenticate,nftCreation)
+
+//nftCreation
+router.post("/nftverify",authenticate,nftVerification)
 
 
 //individualnft
@@ -102,5 +136,51 @@ router.get("/deletenotification/:notification_id",authenticate,deletenotificatio
 //unread notification
 router.get("/unreadnotification",authenticate,unreadnotification)
 
+//copyright Request
+router.post("/requestcopyright",authenticate,copyright)
+
+//individualcopyright
+router.get("/individualcopyright/:copyright_id",authenticate,copyrightdata);
+
+
+//all copyright requests for specific nft
+router.get("/copyrightrequests/:nftName",authenticate,copyrightrequests);
+
+
+//all copyright requests for specific nft
+router.post("/copyrightaction",authenticate,copyrightaction);
+
+
+//all copyright requests for specific nft
+router.get("/copynft/:nft_id",authenticate,copynft);
+
+
+//copy creation of specific nft with same content
+router.post("/copycreation",authenticate,copycreation);
+
+//copy creation of specific nft with different content
+router.post("/copycreationdifferent",authenticate,copycreationdifferent);
+
+
+router.post("/copyrightcancel",authenticate,cancelcopyright);
+
+router.post("/copyrightallow",authenticate,allowcopyright);
+
+
+router.get("/copynonce/:id",authenticate,copynonce);
+
+router.post("/copyfee",authenticate,copycreationfee)
+
+router.delete("/copyrightdelete/:delete_id",authenticate,copyrightdelete);
+
+//change buying options
+router.post("/changebuyingoption",adminAuthenticate,buyingoptions);
+
+//change buying options
+router.get("/adminbuydata",adminAuthenticate,adminbuydata);
+
+
+//get nft creation fee
+router.get("/nftfee",authenticate,nftCreationFee);
 
 module.exports = router;

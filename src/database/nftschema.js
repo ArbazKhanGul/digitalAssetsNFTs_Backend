@@ -9,23 +9,61 @@ const nftSchema = new mongosse.Schema({
     trim : true,
     lowercase: true,
   },
-  // nftLanguage: {
-  //   type: String,
-  //   required: true,
-  //   trim : true,
-  //   lowercase: true,
-  // },
+
+  contentURI: {
+    type: String,
+    required: true,
+    trim : true
+  },
+
+  hash: {
+    type: String,
+    // required: true,
+    trim : true
+  },
+
+  originalTokenURI: {
+    type: String,
+    trim : true,
+    default:"nothing"
+  },
+  contentType: {
+    type: String,
+    required: true,
+    trim : true
+  },
+  language: {
+    type: String,
+    trim : true
+  },
   tokenURI: {
     type: String,
     required: true,
     trim : true
   },
-  // nftText: {
-  //   type: String,
-  //   required: true,
-  //   trim : true,
-  //   unique : true,
-  // },
+  original:{
+    type:Boolean,
+    default: true
+   },
+
+   copyrightStatus: {
+    type: String,
+    trim : true,
+    default: 'notallowed'
+  },
+
+  copyrightPrice: {
+    type: Number,
+    default: 0.0,
+    min: 0,
+  },
+
+  copyNonce: {
+    type: Number,
+    default: 0.0,
+    min: 0,
+  },
+
   creator_email: {
     type: String,
     required: true,
@@ -38,11 +76,6 @@ const nftSchema = new mongosse.Schema({
     trim : true,
     lowercase: true,
       },
-  // nftDescription:{
-  //   type:String,
-  //   trim:true,
-  //   required: true,
-  // },
   creator_address: {
     type: String,
     required: true,
@@ -53,25 +86,10 @@ const nftSchema = new mongosse.Schema({
     required: true,
     trim : true,
   },
-  
-  hash: {    
-    type: String,
-    required: true,
-    trim : true,
-    unique:true
-  },
-  // nftTextLength:{
-  //   type: Number,
-  // },
   status:{
    type: String,
    default: "notVerified",
    trim:true
-  },
-  title:{
-    type:String,
-    trim:true,
-    required:true,
   },
   tokenId:{
     type: Number,
@@ -87,6 +105,10 @@ const nftSchema = new mongosse.Schema({
     default: 0.0,
     min: 0,
   },
+  createdAt:{
+     type: Date,
+     required: true,
+  },
   lastPrice:{
     type: Number,
     default: 0.0,
@@ -97,7 +119,6 @@ const nftSchema = new mongosse.Schema({
     default: true
   }
 },
-{ timestamps: true },
 );
 
 

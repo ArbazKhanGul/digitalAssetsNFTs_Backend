@@ -4,7 +4,6 @@ const path = require('path');
 
 exports.profile=(req,res)=>{
   
-    console.log("🚀 ~ file: profile.js ~ line 3 ~ req.user", req.user)
     res.status(200).send({
         message: "success",
         user:req.user
@@ -17,8 +16,7 @@ exports.profile=(req,res)=>{
 exports.profileUpdate=async (req,res)=>{
 
   let values=req.body;
-  console.log("🚀 ~ file: profile.js:20 ~ exports.profileUpdate= ~ values", values)
-
+  
 
    if(!(Object.keys(req.files).length === 0))
    {

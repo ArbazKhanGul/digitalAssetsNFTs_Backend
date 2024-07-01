@@ -1,8 +1,4 @@
 const mongosse = require("mongoose");
-// const bcrypt = require("bcryptjs");
-// const jwt = require("jsonwebtoken");
-
-
 
 
 const UserSchema = new mongosse.Schema({

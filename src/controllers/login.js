@@ -14,10 +14,10 @@ exports.getNonceLogin = async (req, res) => {
   const address = web3.utils.toChecksumAddress(walletAddress);
 
   const result = await User.findOne({ address });
-  console.log(
-    "🚀 ~ file: login.js ~ line 15 ~ exports.getNonceLogin= ~ result",
-    result
-  );
+  // console.log(
+  //   "🚀 ~ file: login.js ~ line 15 ~ exports.getNonceLogin= ~ result",
+  //   result
+  // );
 
   if (!result) {
     const add =

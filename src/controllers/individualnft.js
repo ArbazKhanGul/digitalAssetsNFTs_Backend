@@ -3,7 +3,6 @@ var NFT = require('../database/nftschema')
 exports.individualnft = async (req, res) => {
     let { nft_id } = req?.params;
     let user = req?.session?.user
-    console.log("🚀 ~ file: individualnft.js:3 ~ exports.collection= ~ nft_id", nft_id)
 
     let result = await NFT.findOne({ tokenURI: nft_id, status: { $ne: "notVerified" } }, {
         status: 1, price: 1,
@@ -12,10 +11,15 @@ exports.individualnft = async (req, res) => {
         tokenId:1,
         title:1,
         nftName:1,
-        tokenURI:1
-
+        tokenURI:1,
+        original:1,
+        originalTokenURI:1,
+        copyrightStatus:1,
+        copyrightPrice:1,
+        original:1
     });
-    console.log("🚀 ~ file: individualnft.js:15 ~ exports.individualnft= ~ result", result)
+    
+    console.log("🚀 ~ file: individualnft.js:19 ~ exports.individualnft= ~ result:", result)
 
  
     if (result) {

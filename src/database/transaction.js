@@ -3,28 +3,44 @@ const mongosse = require("mongoose");
 
 const transactionSchema = new mongosse.Schema({
 
-    sellerName: {
+    type: {
         type: String,
         required: true,
         trim: true,
     },
-    sellerProfile: {
-        type: String,
+    tokenId: {
+        type: Number,
         required: true,
         trim: true,
     },
-    sellerId: {
+    original:{
+        type:Boolean,
+        default: true
+       },
+       
+    buyerName: {
         type: String,
-        required: true,
+        trim: true,
+    },
+    buyerProfile: {
+        type: String,
+        trim: true,
+    },
+    buyerId: {
+        type: String,
         trim: true,
     },
     ownerName: {
         type: String,
         required: true,
         trim: true,
-        lowercase: true,
     },
     ownerProfile: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    nftName: {
         type: String,
         required: true,
         trim: true,
@@ -44,7 +60,7 @@ const transactionSchema = new mongosse.Schema({
         default: 0,
         min: 0,
     },
-}
+} ,{ timestamps: true },
 );
 
 
