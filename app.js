@@ -16,7 +16,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: [process.env.CLIENT_URL,"http://localhost:3000"],
+    origin: [process.env.CLIENT_URL],
     credentials: true,
   })
 );
@@ -98,6 +98,7 @@ app.use((error, req, res, next) => {
   console.log("🚀 ~ file: app.js ~ line 94 ~ app.use ~ error", error.message);
 
   let response = error.message;
+  
 
   if (response == "jwt expired") {
     res.render("failure",{
