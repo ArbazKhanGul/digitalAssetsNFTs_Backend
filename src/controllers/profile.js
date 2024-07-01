@@ -21,12 +21,9 @@ exports.profileUpdate=async (req,res)=>{
    if(!(Object.keys(req.files).length === 0))
    {
     let allFiles=req.files;
-    const oldPath = path.join(__dirname, "..","..", "images");
-
+  
     for (var key in allFiles) {
-      let imagePath = path.join(oldPath,req.user[key]);
-      fs.unlinkSync(imagePath);
-      values[key]=allFiles[key][0]?.filename;
+      values[key]=allFiles[key][0]?.path;
     }
    }
 

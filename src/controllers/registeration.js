@@ -14,8 +14,8 @@ exports.userRegisteration=async (req, res) => {
         throw new Error("Invalid wallet address")
     }
 
-           let profileUrl=profile[0]?.filename;
-           let coverUrl=cover[0]?.filename;
+           let profileUrl=profile[0]?.path;
+           let coverUrl=cover[0]?.path;
               
 
 
