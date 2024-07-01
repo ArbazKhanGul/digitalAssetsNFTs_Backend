@@ -14,10 +14,13 @@ var listenEvent=require('./src/utils/listenEvent')
 
 const app = express();
 
-app.use(cors());
-
-
-
+const allowedOrigins = [process.env.CLIENT_URL];
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true, // Allow credentials (cookies, HTTP authentication)
+  })
+);
 listenEvent();
 //Redis connection
 // var Redisclient=redis.createClient(
