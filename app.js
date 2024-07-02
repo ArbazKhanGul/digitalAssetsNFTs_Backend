@@ -21,6 +21,7 @@ app.use(
     credentials: true, // Allow credentials (cookies, HTTP authentication)
   })
 );
+
 listenEvent();
 //Redis connection
 // var Redisclient=redis.createClient(
@@ -50,16 +51,16 @@ app.use(express.urlencoded({ extended: true }));
 
 
 
-app.use(session({
-  secret: process.env.SECRET_KEY_SESSION,
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    secure: true, // Set to true if served over HTTPS
-    httpOnly: true, // Helps mitigate the risk of client-side script accessing the protected cookie
-    sameSite: 'None', // Allows cross-site cookie usage
-  },
-}));
+// app.use(session({
+//   secret: process.env.SECRET_KEY_SESSION,
+//   resave: false,
+//   saveUninitialized: false,
+//   cookie: {
+//     secure: true, // Set to true if served over HTTPS
+//     httpOnly: true, // Helps mitigate the risk of client-side script accessing the protected cookie
+//     sameSite: 'None', // Allows cross-site cookie usage
+//   },
+// }));
 
 
 ///allroutes

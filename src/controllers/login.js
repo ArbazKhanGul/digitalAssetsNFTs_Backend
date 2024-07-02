@@ -2,6 +2,7 @@ const User = require("../database/user");
 const web3 = require("web3");
 const jwt = require("jsonwebtoken");
 const { ethers } = require("ethers");
+const jwt = require('jsonwebtoken');
 
 exports.getNonceLogin = async (req, res) => {
   const walletAddress = req.params.address;
@@ -43,34 +44,28 @@ exports.login = async (req, res) => {
   let { address, signature } = req.body;
 
   if (!signature && !address) {
-    throw new Error("Invalid credentials");
+    return res.status(400).send({ error: "Invalid credentials" });
   }
+  
   address = web3.utils.toChecksumAddress(address);
   const result = await User.findOne({ address });
 
   if (!result) {
-    throw new Error("User not found");
+    return res.status(404).send({ error: "User not found" });
   }
-  const signerAddress = await ethers.utils.verifyMessage(
-    result.nonce,
-    signature
-  );
+
+  const signerAddress = await ethers.utils.verifyMessage(result.nonce, signature);
 
   if (signerAddress !== address) {
-    throw new Error("Invalid Signature");
+    return res.status(401).send({ error: "Invalid Signature" });
   }
 
-  req.session.user=result;
-  // let token = jwt.sign({ _id:result._id}, process.env.SECRET_KEY_LOGIN);
+  // Generate a JWT token
+  const token = jwt.sign({ _id: result._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-  // res.setHeader("Access-Control-Allow-Origin", "https://textnft.vercel.app");
-  // res.setHeader("Access-Control-Allow-Credentials", true);
-  // res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  
   res.status(200).send({
     message: "success",
-    // loginAddress: signerAddress,
-    // token: token,
-    user:result
+    token, // Send the token in the response
+    user: result
   });
 };
