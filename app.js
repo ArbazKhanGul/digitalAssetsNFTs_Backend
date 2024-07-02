@@ -50,22 +50,18 @@ app.use(express.urlencoded({ extended: true }));
 
 
 
-//express session
 app.use(session({
-  // store: new RedisStore({ client: Redisclient }),
-  secret:process.env.SECRET_KEY_SESSION,
-  resave:false,
-  saveUninitialized:false,
-  cookie:{
-      secure: false, // if true only transmit cookie over https
-      httpOnly: false, // if true prevent client side JS from reading the cookie 
-      // maxAge: 1000 * 60 * 10 // session max age in miliseconds
-      // sameSite: 'none',
+  secret: process.env.SECRET_KEY_SESSION,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: true, // Set to true if served over HTTPS
+    httpOnly: true, // Helps mitigate the risk of client-side script accessing the protected cookie
+    sameSite: 'None', // Allows cross-site cookie usage
   },
-  
-  }))
+}));
 
-  
+
 ///allroutes
 app.use(router);
 app.use(stripe_router);
