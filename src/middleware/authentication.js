@@ -17,7 +17,7 @@ exports.authenticate = async (req, res, next) => {
       console.log("🚀 ~ exports.authenticate= ~ user:", user)
        
       req.user = user;
-      req.session.user=user;
+      req.session= {user};
       next();
     } catch (error) {
       console.log("🚀 ~ exports.authenticate= ~ error:", error)
@@ -42,7 +42,7 @@ exports.adminAuthenticate = async (req, res, next) => {
       }
       if (user.role === 'admin') {
         req.user = user;
-        req.session.user=user;
+        req.session= {user};
         next();
       } else {
         return res.status(403).json({ message: 'Not authorized as admin' });
