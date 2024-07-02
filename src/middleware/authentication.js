@@ -10,7 +10,6 @@ exports.authenticate = async (req, res, next) => {
 
     try {
       const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-      console.log("🚀 ~ exports.authenticate= ~ decodedToken:", decodedToken)
       const user = await User.findById(decodedToken._id);
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
@@ -21,6 +20,7 @@ exports.authenticate = async (req, res, next) => {
       req.session.user=user;
       next();
     } catch (error) {
+      console.log("🚀 ~ exports.authenticate= ~ error:", error)
       return res.status(403).json({ message: 'Invalid token' });
     }
   } else {
