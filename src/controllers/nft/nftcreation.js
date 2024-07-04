@@ -54,7 +54,8 @@ exports.nftVerification=async (req,res)=>{
 
   }
   catch(error){
-    throw new Error(error)
+    console.log("🚀 ~ exports.nftVerification= ~ error:", error)
+    throw new Error(error.message)
   }
 
 }
