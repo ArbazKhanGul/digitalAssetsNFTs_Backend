@@ -5,6 +5,8 @@ const { ethers } = require("ethers");
 
 
 exports.nftVerification=async (req,res)=>{
+
+  try{
   const {nftName,hash,size,contentType} = req.body;
  
   const checkName = await NFT.findOne({nftName: nftName})
@@ -50,6 +52,10 @@ exports.nftVerification=async (req,res)=>{
 
  res.send({ status: "success",contentFee:estimated_price_inDollar,creationFee:fee})
 
+  }
+  catch(error){
+    throw new Error(error)
+  }
 
 }
 
