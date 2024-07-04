@@ -2,6 +2,7 @@ require("express-async-errors");
 const express = require("express");
 require("dotenv").config();
 const router = require("./src/Router/router");
+const eventListenRoute=require("./src/Router/listeneventsRoute")
 const stripe_router=require("./src/Router/srtripe_router")
 const cors = require("cors");
 const morgan = require("morgan");
@@ -11,6 +12,9 @@ const session=require("express-session");
 const RedisStore = require('connect-redis')(session);
 var redis=require('redis')
 var listenEvent=require('./src/utils/listenEvent')
+const jwt = require('jsonwebtoken');
+const User = require('./src/database/user'); 
+
 
 const app = express();
 
@@ -22,7 +26,7 @@ app.use(
   })
 );
 
-listenEvent();
+// listenEvent();
 //Redis connection
 // var Redisclient=redis.createClient(
 //   {
@@ -61,10 +65,30 @@ app.use(express.urlencoded({ extended: true }));
 //     sameSite: 'None', // Allows cross-site cookie usage
 //   },
 // }));
+app.use(async (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const token = authHeader.split(' ')[1];
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      console.log("🚀 ~ app.use ~ decoded:", decoded)
+      // Assuming you have a User model to fetch user details
+      const user = await User.findById(decoded._id); // Adjust this line to your actual User model fetching method
+     
+      if (user) {
+        req.session ={ user};
+      }
+    } catch (error) {
+      console.error("Token verification failed:", error);
+    }
+  }
+  next();
+});
 
 
 ///allroutes
 app.use(router);
+app.use(eventListenRoute)
 app.use(stripe_router);
 
 //images host
@@ -88,6 +112,7 @@ app.use((req, res, next) => {
 //     });
 //   });
 // }
+
 
 
 app.use((error, req, res, next) => {

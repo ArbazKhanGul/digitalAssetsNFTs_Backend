@@ -76,8 +76,8 @@ router.get("/profile",authenticate,profile);
 router.patch("/profileUpdate",authenticate,multiupload,profileUpdate);
 
 //verification
-router.get("/verify",verify);
-router.get("/adminverify",adminVerify);
+router.get("/verify",authenticate,verify);
+router.get("/adminverify",authenticate,adminVerify);
 
 //adminDashboard
 router.get("/dashboarddata",adminAuthenticate,dashboardData);

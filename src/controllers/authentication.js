@@ -1,5 +1,10 @@
 exports.verify=async (req, res) => { 
+  try{  
+    console.log("🚀 ~ exports.verify= ~ req.user:", req.user)
+    console.log("🚀 ~ exports.verify= ~ req.session.user:", req.session.user)
+ 
     let user= req.session.user
+    console.log("🚀 ~ exports.verify= ~ user:", user)
   
     if(user)
     {
@@ -9,7 +14,11 @@ exports.verify=async (req, res) => {
     {
       res.send({status :"failed"})
     }
+  }
+  catch(error){
+    console.log("🚀 ~ exports.verify= ~ error:", error)
     
+  }
 }
 
 exports.adminVerify=async (req, res) => { 

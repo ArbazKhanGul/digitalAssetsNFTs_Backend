@@ -41,6 +41,7 @@ exports.getNonceLogin = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
+  try{
   let { address, signature } = req.body;
 
   if (!signature && !address) {
@@ -67,5 +68,9 @@ exports.login = async (req, res) => {
     message: "success",
     token, // Send the token in the response
     user: result
-  });
+  });}
+  catch(e){
+    console.log("🚀 ~ exports.login= ~ e:", e)
+    
+  }
 };
