@@ -116,7 +116,7 @@ app.use((req, res, next) => {
 
 
 app.use((error, req, res, next) => {
-  console.log("🚀 ~ file: app.js ~ line 94 ~ app.use ~ error", error.message);
+  console.log("🚀 ~ file: app.js ~ line 94 ~ app.use ~ error", error);
 
   let response = error.message;
   
