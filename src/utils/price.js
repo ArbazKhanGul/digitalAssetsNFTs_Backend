@@ -3,6 +3,7 @@ const { ethers } = require("ethers");
 
 module.exports= async function price(size,type) {
 
+  try{
     const binance = new Binance();
      let ticker = await binance.prices('BNBUSDT');
 
@@ -28,5 +29,9 @@ module.exports= async function price(size,type) {
     }
 
     return estimated_price_inDollar;
-
+  }
+  catch(error){
+    console.log("🚀 ~ price ~ error:", error)
+    return 0;
+  }
   };
